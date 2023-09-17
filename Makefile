@@ -1,5 +1,5 @@
-STUID = 221220000
-STUNAME = 张三
+STUID = SA23225330 
+STUNAME = 原神启动
 
 # DO NOT modify the following code!!!
 
