@@ -64,6 +64,16 @@ static int cmd_si(char *args)
   return 0;
 }
 
+static int cmd_info(char *args) {
+  //parse args
+  char *arg = strtok(NULL , " ");
+  //Note: feature of fall through
+  if (!strcmp(arg , "r"))
+     isa_reg_display();
+//  else if 
+    return 0;
+}
+
 
 static struct {
   const char *name;
@@ -74,7 +84,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si" , "Execute by single step" , cmd_si },
-
+  { "info" , "Show info" , cmd_info },
   /* TODO: Add more commands */
 
 };
