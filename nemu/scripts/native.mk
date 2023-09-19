@@ -13,7 +13,7 @@
 # See the Mulan PSL v2 for more details.
 #**************************************************************************************/
 
--include $(NEMU_HOME)/../Makefile
+include $(NEMU_HOME)/../Makefile
 include $(NEMU_HOME)/scripts/build.mk
 
 include $(NEMU_HOME)/tools/difftest.mk
@@ -47,5 +47,5 @@ $(clean-tools):
 clean-tools: $(clean-tools)
 clean-all: clean distclean clean-tools
 
-.PHONY: run-env gdb run clean-tools clean-all $(clean-tools)
+.PHONY: run gdb run-env clean-tools clean-all $(clean-tools)
 #.PHONY: run gdb run-env clean-tools clean-all $(clean-tools)
