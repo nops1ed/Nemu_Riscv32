@@ -49,6 +49,7 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+  is_batch_mode = false;
   return -1;
 }
 
