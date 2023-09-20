@@ -102,7 +102,7 @@ static int cmd_x(char *args) {
     return 0;
   }
   printf("%s\n" , arg);
-  uint64_t addr = atoi(arg);
+  uint64_t addr = atoi(arg + 2);
   printf("%lu\n" , addr);
   for (int j = 0 ; j < i ; j++)
   {
