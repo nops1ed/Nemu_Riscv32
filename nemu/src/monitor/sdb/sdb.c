@@ -101,8 +101,9 @@ static int cmd_x(char *args) {
     printf("x: No vaild Args\n");
     return 0;
   }
+  uint64_t addr;
   printf("%s\n" , arg);
-  uint64_t addr = atoi(arg + 2);
+  sscanf(arg , "%lx" , &addr);
   printf("%lu\n" , addr);
   for (int j = 0 ; j < i ; j++)
   {
