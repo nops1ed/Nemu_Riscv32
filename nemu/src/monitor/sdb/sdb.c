@@ -88,7 +88,8 @@ static int cmd_x(char *args) {
   int i = atoi(arg);
   //arg = strtok(NULL , " ");
   //arg = strtok(arg , "0x");
-  arg = strtok(NULL , "0x");	
+  //arg = strtok(NULL , "0x");	
+  arg = args;
   if (!arg)
   {
     printf("x: No vaild Args\n");
