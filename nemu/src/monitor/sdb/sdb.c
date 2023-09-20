@@ -86,7 +86,7 @@ static int cmd_x(char *args) {
     return 0;
   } 
   int i = atoi(arg);
-  strtok(NULL , " ");
+  //arg = strtok(NULL , " ");
   //arg = strtok(arg , "0x");
   arg = strtok(NULL , "0x");	
   if (!arg)
