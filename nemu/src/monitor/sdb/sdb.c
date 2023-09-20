@@ -19,6 +19,8 @@
 #include <readline/history.h>
 #include "sdb.h"
 
+#include <memory/vaddr.h>
+
 static int is_batch_mode = false;
 
 void init_regex();
@@ -71,9 +73,33 @@ static int cmd_info(char *args) {
   if (!strcmp(arg , "r"))
      isa_reg_display();
 //  else if 
-    return 0;
+  else 
+    printf("info:No vaild Args\n");
+  return 0;
 }
 
+static int cmd_x(char *args) {
+  char *arg = strtok(NULL , " ");
+  if (!arg) 
+  {
+    printf("x: No vaild Args\n");
+    return 0;
+  } 
+  int i = atoi(arg);
+  arg = strtok(NULL , " ");
+  arg = strtok(arg , "0x");
+  if (!arg)
+  {
+    printf("x: No vaild Args\n");
+    return 0;
+  }
+  uint64_t addr = atoi(arg);
+  for (int j = 0 ; j < i ; j++)
+  {
+    printf("%u\n" , vaddr_read(addr + j , 1));
+  }
+  return 0;
+}
 
 static struct {
   const char *name;
@@ -85,6 +111,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si" , "Execute by single step" , cmd_si },
   { "info" , "Show info" , cmd_info },
+  { "x" , "Scan Memory" , cmd_x },
   /* TODO: Add more commands */
 
 };
