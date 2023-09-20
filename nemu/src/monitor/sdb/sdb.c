@@ -79,7 +79,9 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+  	printf("%s\n" , args);
   char *arg = strtok(NULL , " ");
+	printf("%s\n" , args);
   if (!arg) 
   {
     printf("x: No vaild Args\n");
