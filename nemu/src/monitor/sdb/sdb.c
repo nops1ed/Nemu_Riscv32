@@ -103,7 +103,7 @@ static int cmd_x(char *args) {
   }
   uint64_t addr;
   printf("%s\n" , arg);
-  sscanf(arg , "%lx" , &addr);
+  sscanf(arg , "%lu" , &addr);
   printf("%lu\n" , addr);
 	printf("-----------------------------------\n");
 
