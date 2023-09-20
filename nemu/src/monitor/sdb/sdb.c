@@ -105,6 +105,8 @@ static int cmd_x(char *args) {
   printf("%s\n" , arg);
   sscanf(arg , "%lx" , &addr);
   printf("%lu\n" , addr);
+	printf("-----------------------------------\n");
+
   for (int j = 0 ; j < i ; j++)
   {
     printf("%u\n" , vaddr_read(addr + j , 1));
