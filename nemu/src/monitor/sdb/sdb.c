@@ -84,6 +84,8 @@ static int cmd_x(char *args) {
   	printf("%s\n" , arg);
 
 	printf("%s\n" , args);
+	printf("-----------------------------------\n");
+
   if (!arg) 
   {
     printf("x: No vaild Args\n");
