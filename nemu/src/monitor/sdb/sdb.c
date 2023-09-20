@@ -93,7 +93,9 @@ static int cmd_x(char *args) {
     printf("x: No vaild Args\n");
     return 0;
   }
+  printf("%s\n" , arg);
   uint64_t addr = atoi(arg);
+  printf("%lu\n" , addr);
   for (int j = 0 ; j < i ; j++)
   {
     printf("%u\n" , vaddr_read(addr + j , 1));
