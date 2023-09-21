@@ -105,12 +105,13 @@ static int cmd_x(char *args) {
   vaddr_t addr;
   printf("%s\n" , arg);
   sscanf(arg, "%x" , &addr);
-  printf("%u\n" , addr);
+  //printf("%u\n" , addr);
 	printf("-----------------------------------\n");
 
   for (int j = 0 ; j < i ; j++)
   {
-    printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
+    word_t ret = vaddr_read(addr + 4 * j , 4);
+    printf("0x%x: %08x\n" , addr + 4 * j, ret);
   }
   return 0;
 }
