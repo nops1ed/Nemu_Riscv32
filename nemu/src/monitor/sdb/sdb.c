@@ -79,23 +79,24 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-  	printf("%s\n" , args);
+  	//printf("%s\n" , args);
   char *arg = strtok(NULL , " ");
-  	printf("%s\n" , arg);
+  	//printf("%s\n" , arg);
 
-	printf("%s\n" , args);
-	printf("-----------------------------------\n");
+	//printf("%s\n" , args);
+	//printf("-----------------------------------\n");
 
   if (!arg) 
   {
     printf("x: No vaild Args\n");
     return 0;
   } 
-  int i = atoi(arg);
+  int i;
+  sscanf(arg , "%d" , &i);
   //arg = strtok(NULL , " ");
   //arg = strtok(arg , "0x");
   //arg = strtok(NULL , "0x");	
-  arg = strtok(NULL , "\0");
+  arg = strtok(NULL , " ");
   if (!arg)
   {
     printf("x: No vaild Args\n");
@@ -103,7 +104,7 @@ static int cmd_x(char *args) {
   }
   uint64_t addr;
   printf("%s\n" , arg);
-  sscanf(arg + 2, "%lx" , &addr);
+  sscanf(arg, "%lx" , &addr);
   printf("%lu\n" , addr);
 	printf("-----------------------------------\n");
 
