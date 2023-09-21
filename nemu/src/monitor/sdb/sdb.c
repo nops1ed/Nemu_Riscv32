@@ -102,15 +102,15 @@ static int cmd_x(char *args) {
     printf("x: No vaild Args\n");
     return 0;
   }
-  uint64_t addr;
+  vaddr_t addr;
   printf("%s\n" , arg);
-  sscanf(arg, "%lx" , &addr);
-  printf("%lu\n" , addr);
+  sscanf(arg, "%x" , &addr);
+  printf("%u\n" , addr);
 	printf("-----------------------------------\n");
 
   for (int j = 0 ; j < i ; j++)
   {
-    printf("0x%lx: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
+    printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
   }
   return 0;
 }
