@@ -98,7 +98,15 @@ static int cmd_x(char *args) {
   vaddr_t addr = 0;
   sscanf(arg, "%x" , &addr);
   for (int j = 0 ; j < i ; j++)
-    printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
+	{
+    //printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
+		printf("0x%x: " , addr + 4 * j);
+		for (int k = 0 ; k < 4 ; k++)
+		{
+			printf("%02x " , vaddr_read(addr + 4 * j + k , 1));		
+		}
+		printf("\n");
+	}
   return 0;
 }
 
