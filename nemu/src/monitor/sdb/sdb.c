@@ -73,10 +73,10 @@ static int cmd_info(char *args) {
   char *arg = strtok(NULL , " ");
   //Note: feature of fall through
   if (!strcmp(arg , "r"))
-     isa_reg_display();
+		isa_reg_display();
 //  else if 
   else 
-    printf("info:No vaild Args\n");
+    printf("info: Invaild Args\n");
   return 0;
 }
 
@@ -95,7 +95,7 @@ static int cmd_x(char *args) {
     printf("x: Too few Args\n");
     return 0;
   }
-  vaddr_t addr;
+  vaddr_t addr = 0;
   sscanf(arg, "%x" , &addr);
   for (int j = 0 ; j < i ; j++)
     printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
