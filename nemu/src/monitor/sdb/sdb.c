@@ -61,7 +61,9 @@ static int cmd_si(char *args)
 {	
   //parse args
   char *arg = strtok(NULL," ");
-  int i = arg ? atoi(arg) : 1;
+  int i = 0;
+  if (!arg)	i = 1;
+	else sscanf(arg , "%d" , &i);
   cpu_exec(i);	  
   return 0;
 }
@@ -79,39 +81,24 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-  	//printf("%s\n" , args);
   char *arg = strtok(NULL , " ");
-  	//printf("%s\n" , arg);
-
-	//printf("%s\n" , args);
-	//printf("-----------------------------------\n");
-
+  int i = 0;
   if (!arg) 
   {
-    printf("x: No vaild Args\n");
+    printf("x: Too few Args\n");
     return 0;
   } 
-  int i;
   sscanf(arg , "%d" , &i);
-  //arg = strtok(NULL , " ");
-  //arg = strtok(arg , "0x");
-  //arg = strtok(NULL , "0x");	
   arg = strtok(NULL , " ");
   if (!arg)
   {
-    printf("x: No vaild Args\n");
+    printf("x: Too few Args\n");
     return 0;
   }
   vaddr_t addr;
-  //printf("%s\n" , arg);
   sscanf(arg, "%x" , &addr);
-  printf("%x\n" , addr);
-	printf("-----------------------------------\n");
-
   for (int j = 0 ; j < i ; j++)
-  {
     printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
-  }
   return 0;
 }
 
