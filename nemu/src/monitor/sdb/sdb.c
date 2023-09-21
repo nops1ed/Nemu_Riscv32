@@ -110,7 +110,7 @@ static int cmd_x(char *args) {
 
   for (int j = 0 ; j < i ; j++)
   {
-    printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 1));
+    printf("0x%x: %08d\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
   }
   return 0;
 }
