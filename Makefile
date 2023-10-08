@@ -1,6 +1,5 @@
 STUID = SA23225330 
-STUNAME = 原神启动
-
+STUNAME = Nops1ed 
 # DO NOT modify the following code!!!
 
 GITFLAGS = -q --author='tracer-ics2023 <tracer@njuics.org>' --no-verify --allow-empty

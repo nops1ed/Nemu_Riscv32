@@ -76,7 +76,7 @@ static int cmd_info(char *args) {
 		isa_reg_display();
 //  else if 
   else 
-    printf("info: Invaild Args\n");
+    printf("info: Invaild Arguments\n");
   return 0;
 }
 
@@ -85,14 +85,14 @@ static int cmd_x(char *args) {
   int i = 0;
   if (!arg) 
   {
-    printf("x: Too few Args\n");
+    printf("x: Too few Arguments\n");
     return 0;
   } 
   sscanf(arg , "%d" , &i);
   arg = strtok(NULL , " ");
   if (!arg)
   {
-    printf("x: Too few Args\n");
+    printf("x: Too few Arguments\n");
     return 0;
   }
   vaddr_t addr = 0;
@@ -101,10 +101,9 @@ static int cmd_x(char *args) {
 	{
     //printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
 		printf("0x%x: " , addr + 4 * j);
-		for (int k = 0 ; k < 4 ; k++)
-		{
-			printf("%02x " , vaddr_read(addr + 4 * j + 3 - k , 1));		
-		}
+		for (int k = 3 ; k >= 0 ; k--)
+			//Little endian
+			printf("%02x " , vaddr_read(addr + 4 * j + k, 1));		
 		printf("\n");
 	}
   return 0;
@@ -119,7 +118,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si" , "Execute by single step" , cmd_si },
-  { "info" , "Show info" , cmd_info },
+  { "info" , "Show information" , cmd_info },
   { "x" , "Scan Memory" , cmd_x },
   /* TODO: Add more commands */
 

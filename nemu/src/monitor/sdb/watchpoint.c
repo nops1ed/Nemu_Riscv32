@@ -20,9 +20,8 @@
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-
-  /* TODO: Add more members if necessary */
-
+	word_t stored_expr;	
+	word_t val;
 } WP;
 
 static WP wp_pool[NR_WP] = {};
@@ -39,5 +38,33 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-/* TODO: Implement the functionality of watchpoint */
+WP* new_wp() {
+	if (!free_) {
+		printf("watchpoint: wp allocation failed\n");
+		assert(0);
+	}
+	WP *_tmp;
+	for (_tmp = head; _tmp -> next != NULL ; _tmp = _tmp -> next);	
+	_tmp -> next = free_;
+	free_ = free_ -> next;
+	_tmp -> next -> next = NULL;
+	return _tmp -> next;
+}
 
+void free_wp(WP *wp) {
+	if (!head) {
+		printf("watchpoint: wp free failed\n");
+		return;
+	}
+	WP *_tmp = head, *_pre = NULL;
+	//We should always free the last element of head list to keep the sequence of all WPs
+	while(_tmp -> next)
+	{
+		_tmp = _tmp -> next;
+		_pre = _pre ? _pre -> next : head;
+	}
+	_tmp -> next = free_;
+	free_ = _tmp;
+	if (!_pre) head = _pre;
+	else _pre -> next = NULL;
+}

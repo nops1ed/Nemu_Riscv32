@@ -22,6 +22,7 @@
 
 // this should be enough
 static char buf[65536] = {};
+static uint32_t buf_offset;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
@@ -31,8 +32,67 @@ static char *code_format =
 "  return 0; "
 "}";
 
+/*
+*
+*void gen_rand_expr() {
+*  switch (choose(3)) {
+*    case 0: gen_num(); break;
+*    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+*    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+*  }
+*}
+*/
+
+static char op[] = {
+	'+' , '-' , '*' , '/'
+};
+
+static uint32_t choose (uint32_t rand_num) {return rand_num % 3;}
+
+static void gen_num()
+{
+	// We do not expect the value generated becomes too big
+	// In order to just test the function , we set the limitation to be 2^31 - 1 , as INT_MAX
+	uint32_t rand_num = rand() % 65535;		
+	rand_num = rand_num == 0 ? 1 : rand_num;
+	// We use strncpy instead of some function to convert 
+	// So that we can control the offset easier
+	char _tmp[32];
+	uint32_t _tmp_offset = 31;		
+	while(rand_num != 0 && _tmp_offset != -1)
+	{
+		_tmp[_tmp_offset--] = rand_num % 10 + '0';
+		rand_num /= 10;
+	}
+	//DO NOT USE STRCPY 
+	strncpy(buf + buf_offset , _tmp + _tmp_offset + 1, 31 - _tmp_offset);
+	buf_offset += 31 - _tmp_offset;
+}
+
 static void gen_rand_expr() {
-  buf[0] = '\0';
+	//We need a base case here
+	//Is this a effective solution?
+	if (buf_offset > 65520) 
+	{
+		gen_num();
+		return ;
+	}
+	switch (choose(rand()))
+	{
+		case 0:
+			gen_num();
+			break;
+		case 1:
+			buf[buf_offset++] = '(';
+			gen_rand_expr();
+			buf[buf_offset++] = ')';
+			break;
+		default:
+			gen_rand_expr();
+			buf[buf_offset++] = op[rand() % 4];
+			gen_rand_expr();
+			break;
+	}	
 }
 
 int main(int argc, char *argv[]) {
@@ -45,7 +105,7 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     gen_rand_expr();
-
+	buf[buf_offset++] = '\0';
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
