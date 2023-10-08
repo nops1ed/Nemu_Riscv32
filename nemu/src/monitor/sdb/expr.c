@@ -49,7 +49,7 @@ static struct rule {
 	{"\\(", TK_LBT},					// left bracket
 	{"\\)", TK_RBT},					// right bracket
 	{"\\[$]{1}\\w{1,}" , TK_REG},		// register
-	{"\\[0-9]+" , TK_DEC},			// decimal number								
+	{"[0-9]+" , TK_DEC},			// decimal number								
 	{"\\0\\x\\d{1,}",TK_HEX}, 		// hex number
 	{"==", TK_EQ},						// equal
 	{"!=" , TK_NEQ},					// bool not equal
@@ -147,7 +147,7 @@ static bool make_token(char *e) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
-  }
+}
 
   return true;
 }
