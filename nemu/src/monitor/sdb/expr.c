@@ -22,13 +22,13 @@
 
 enum {
 	//TK_INT = 1 ,TK_EQ , TK_PLUS , TK_MINUS , TK_MULTI, TK_DIV , TK_LBT , TK_RBT ,
+  	TK_NOTYPE = 256, 
 	TK_LBT = 1 , TK_RBT , TK_NEG , TK_POS , TK_DEREF , TK_GADDR , /* Level 0 - 1*/
 	TK_MULTI , TK_DIV , TK_MOD , TK_PLUS , TK_MINUS ,							/* Level 2 - 3*/
 	TK_EQ , TK_NEQ , TK_LAND , 
 	TK_REG , 
 	TK_DEC, TK_HEX ,  
 	//And so on
-  	TK_NOTYPE = 256, 
 	/* TODO: Add more token types */
 
 };
@@ -95,7 +95,7 @@ static bool make_token(char *e) {
 
   while (e[position] != '\0') {
     /* Try all rules one by one. */
-    for (i = 0; i < NR_REGEX; i ++) {
+    for (i = 0; i < NR_REGEX; i++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
@@ -110,8 +110,7 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-		switch (rules[i].token_type) 
-		{
+		switch (rules[i].token_type) {
 			case TK_DEC :
 				len = substr_len < 31 ? substr_len : 31;
 				//DO NOT USE 'strcpy' !
