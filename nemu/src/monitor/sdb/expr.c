@@ -150,7 +150,7 @@ static bool make_token(char *e) {
 		}
     }
 }
-
+	printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
