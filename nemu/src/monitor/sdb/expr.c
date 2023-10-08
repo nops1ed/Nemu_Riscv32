@@ -43,16 +43,16 @@ static struct rule {
    */
   	{" +", TK_NOTYPE},					// spaces
 	{"\\+" , '+'} ,
-  	//{"\\+", TK_PLUS},					// plus
+  	{"\\+", TK_PLUS},					// plus
 	{"\\-", TK_MINUS},					// minus
 	{"\\*", TK_MULTI},					// multi
 	{"\\/", TK_DIV},					// divide
 	//{"\\(", TK_LBT},					// left bracket
 	//{"\\)", TK_RBT},					// right bracket
 	//{"\\[$]{1}\\w{1,}" , TK_REG},		// register
-	{"[0-9]+" , TK_DEC},			// decimal number								
+	{"[0-9]*" , TK_DEC},			// decimal number								
 	//{"\\0\\x\\d{1,}",TK_HEX}, 		// hex number
-	//{"==", TK_EQ},						// equal
+	{"==", TK_EQ},						// equal
 	//{"!=" , TK_NEQ},					// bool not equal
 	//{"&&" , TK_LAND} ,					// logical and
 															// TODO
@@ -97,67 +97,66 @@ static bool make_token(char *e) {
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i++) {
-      if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
-        char *substr_start = e + position;
-        int substr_len = pmatch.rm_eo;
+    	if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
+        	char *substr_start = e + position;
+        	int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        	Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+            	i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
-        position += substr_len;
+			position += substr_len;
 
-        /* Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
+        	/* Now a new token is recognized with rules[i]. Add codes
+         	* to record the token in the array `tokens'. For certain types
+         	* of tokens, some extra actions should be performed.
+         	*/
 
-		switch (rules[i].token_type) {
-			case TK_DEC :
-				len = substr_len < 31 ? substr_len : 31;
-				//DO NOT USE 'strcpy' !
-				//It may cause buffer overflow
-				strncpy(tokens[nr_token].str , substr_start , len);
-				//tokens[nr_token].str[len] = '\0';
-				printf("\nNow we got %s\n" , tokens[nr_token].str);
-				tokens[nr_token++].type = rules[i].token_type;
-				break;
-			case TK_REG:
-				//Same as TK_DEC case , which just need to change start location
-				len = substr_len < 32 ? substr_len : 31;
-				//DO NOT USE 'strcpy' !
-				//It may cause buffer overflow
-				strncpy(tokens[nr_token].str , substr_start + 1 , len - 1);
-				tokens[nr_token].str[len] = '\0';
-				tokens[nr_token++].type = rules[i].token_type;
-				break;
-			case TK_HEX:
-				len = substr_len < 33 ? substr_len : 31;
-				//DO NOT USE 'strcpy' !
-				//It may cause buffer overflow
-				strncpy(tokens[nr_token].str , substr_start + 2 , len - 2);
-				tokens[nr_token].str[len] = '\0';
-				tokens[nr_token++].type = rules[i].token_type;
-				break;
-			case TK_NOTYPE:
-				break;
-			case '+':
-				tokens[nr_token++].type = TK_PLUS;
-				break;
-          	default: 
-				printf("\nIt seems like u got default branch\n");
-				tokens[nr_token++].type = rules[i].token_type;
-				//Do nothing
-				;
-		}
-    }
-	else printf("\nOOPs! Seems like no type got\n");
-}
+			switch (rules[i].token_type) {
+				case TK_DEC :
+					len = substr_len < 31 ? substr_len : 31;
+					//DO NOT USE 'strcpy' !
+					//It may cause buffer overflow
+					strncpy(tokens[nr_token].str , substr_start , len);
+					//tokens[nr_token].str[len] = '\0';
+					printf("\nNow we got %s\n" , tokens[nr_token].str);
+					tokens[nr_token++].type = rules[i].token_type;
+					break;
+				case TK_REG:
+					//Same as TK_DEC case , which just need to change start location
+					len = substr_len < 32 ? substr_len : 31;
+					//DO NOT USE 'strcpy' !
+					//It may cause buffer overflow
+					strncpy(tokens[nr_token].str , substr_start + 1 , len - 1);
+					tokens[nr_token].str[len] = '\0';
+					tokens[nr_token++].type = rules[i].token_type;
+					break;
+				case TK_HEX:
+					len = substr_len < 33 ? substr_len : 31;
+					//DO NOT USE 'strcpy' !
+					//It may cause buffer overflow
+					strncpy(tokens[nr_token].str , substr_start + 2 , len - 2);
+					tokens[nr_token].str[len] = '\0';
+					tokens[nr_token++].type = rules[i].token_type;
+					break;
+				case TK_NOTYPE:
+					break;
+				case '+':
+					tokens[nr_token++].type = TK_PLUS;
+					break;
+          		default: 
+					printf("\nIt seems like u got default branch\n");
+					tokens[nr_token++].type = rules[i].token_type;
+					//Do nothing
+					;
+			}
+    	}
+		else printf("\nOOPs! Seems like no type got\n");
+	}
 	printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
-	i = 0;
 }
 
   return true;
