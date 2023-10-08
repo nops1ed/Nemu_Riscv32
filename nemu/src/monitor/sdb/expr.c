@@ -140,6 +140,7 @@ static bool make_token(char *e) {
 			case TK_NOTYPE:
 				break;
           	default: 
+				printf("\nIt seems like u got default branch\n");
 				tokens[nr_token++].type = rules[i].token_type;
 				//Do nothing
 				;
