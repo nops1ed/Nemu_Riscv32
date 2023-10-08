@@ -118,6 +118,7 @@ static bool make_token(char *e) {
 				//It may cause buffer overflow
 				strncpy(tokens[nr_token].str , substr_start , len);
 				tokens[nr_token].str[len] = '\0';
+				tokens[nr_token++].type = rules[i].token_type;
 				break;
 			case TK_REG:
 				//Same as TK_DEC case , which just need to change start location
@@ -126,6 +127,7 @@ static bool make_token(char *e) {
 				//It may cause buffer overflow
 				strncpy(tokens[nr_token].str , substr_start + 1 , len - 1);
 				tokens[nr_token].str[len] = '\0';
+				tokens[nr_token++].type = rules[i].token_type;
 				break;
 			case TK_HEX:
 				len = substr_len < 33 ? substr_len : 31;
@@ -133,13 +135,14 @@ static bool make_token(char *e) {
 				//It may cause buffer overflow
 				strncpy(tokens[nr_token].str , substr_start + 2 , len - 2);
 				tokens[nr_token].str[len] = '\0';
+				tokens[nr_token++].type = rules[i].token_type;
 				break;
+			case TK_NOTYPE:
+				continue;
           	default: 
 				//Do nothing
 				;
 		}
-		//each type will execute below statement
-		tokens[nr_token++].type = rules[i].token_type;
     }
 }
 
