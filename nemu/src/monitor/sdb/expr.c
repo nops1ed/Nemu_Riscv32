@@ -141,7 +141,7 @@ static bool make_token(char *e) {
 					break;
 				case TK_NOTYPE:
 					break;
-				case '+':
+				case TK_PLUS:
 					tokens[nr_token++].type = TK_PLUS;
 					break;
           		default: 
