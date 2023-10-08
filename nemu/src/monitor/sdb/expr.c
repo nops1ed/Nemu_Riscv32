@@ -92,10 +92,10 @@ static bool make_token(char *e) {
   int position = 0;
   int i , len;
   regmatch_t pmatch;
-
   nr_token = 0;
 
   while (e[position] != '\0') {
+  	bool flag = false;
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i++) {
     	if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
@@ -150,13 +150,15 @@ static bool make_token(char *e) {
 					//Do nothing
 					;
 			}
+			flag = true;
     	}
 		else printf("\nOOPs! Seems like no type got\n");
+		if (flag) break;
 	}
 	printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
     if (i == NR_REGEX) {
-      printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
-      return false;
+    	printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+    	return false;
     }
 }
 
