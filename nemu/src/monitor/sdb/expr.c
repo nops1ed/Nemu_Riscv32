@@ -139,6 +139,7 @@ static bool make_token(char *e) {
 			case TK_NOTYPE:
 				break;
           	default: 
+
 				//Do nothing
 				;
 		}
