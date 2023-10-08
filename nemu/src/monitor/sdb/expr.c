@@ -42,7 +42,8 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
   	{" +", TK_NOTYPE},					// spaces
-  	{"\\+", TK_PLUS},					// plus
+	{"\\+" , '+'} ,
+  	//{"\\+", TK_PLUS},					// plus
 	{"\\-", TK_MINUS},					// minus
 	{"\\*", TK_MULTI},					// multi
 	{"\\/", TK_DIV},					// divide
@@ -139,8 +140,8 @@ static bool make_token(char *e) {
 				break;
 			case TK_NOTYPE:
 				break;
-			case TK_PLUS:
-				tokens[nr_token++].type = rules[i].token_type;
+			case '+':
+				tokens[nr_token++].type = TK_PLUS;
 				break;
           	default: 
 				printf("\nIt seems like u got default branch\n");
