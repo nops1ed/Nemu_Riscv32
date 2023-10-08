@@ -49,8 +49,8 @@ static struct rule {
 	{"\\(", TK_LBT},					// left bracket
 	{"\\)", TK_RBT},					// right bracket
 	{"\\[$]{1}\\w{1,}" , TK_REG},		// register
-	{"\\b\\d{1,}" , TK_DEC},			// decimal number								
-	{"\\b\\0\\x\\d{1,}",TK_HEX}, 		// hex number
+	{"\\d{1,}" , TK_DEC},			// decimal number								
+	{"\\0\\x\\d{1,}",TK_HEX}, 		// hex number
 	{"==", TK_EQ},						// equal
 	{"!=" , TK_NEQ},					// bool not equal
 	{"&&" , TK_LAND} ,					// logical and
@@ -225,24 +225,20 @@ static uint32_t domain_find(uint32_t p , uint32_t q)
 
 static uint32_t eval(int p , int q) {
 	//Invaild case
-  	if (p > q) 
-	{
+  	if (p > q) {
 		printf("Invaild erxpersion\n");
 		assert(0);
   	}
 	//Consider it as a number
-  	else if (p == q) 
-	{
+  	else if (p == q) {
 		int ret_val;
 		sscanf(tokens[p].str , "%d" , &ret_val);
 		return ret_val;
 	}
-  	else if (check_parentheses(p, q) == true) 
-	{
+  	else if (check_parentheses(p, q) == true) {
     	return eval(p + 1, q - 1);
   	}
-  	else 
-	{
+  	else {
 		/*
     	* op = the position of "Domain OPERATION" in the token expression;
     	* val1 = eval(p, op - 1);
@@ -252,14 +248,12 @@ static uint32_t eval(int p , int q) {
 		if (op == -1) assert(0);
 		uint32_t val1 = eval(p , op - 1);
 		uint32_t val2 = eval(op + 1 , q);
-    	switch (tokens[op].type) 
-		{
+    	switch (tokens[op].type) {
       		case TK_PLUS: return val1 + val2;
 			case TK_MINUS:return val1 * val2; 
 			case TK_MULTI:return val1 * val2;
 			case TK_DIV:
-				if (val2 == 0)
-				{
+				if (val2 == 0) {
 					printf("DIV: SIGFPE \n");
 					assert(0);
 				}

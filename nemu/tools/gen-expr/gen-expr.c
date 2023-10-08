@@ -49,8 +49,7 @@ static char op[] = {
 
 static uint32_t choose (uint32_t rand_num) {return rand_num % 3;}
 
-static void gen_num()
-{
+static void gen_num() {
 	// We do not expect the value generated becomes too big
 	// In order to just test the function , we set the limitation to be 2^31 - 1 , as INT_MAX
 	uint32_t rand_num = rand() % 65535;		
@@ -59,8 +58,7 @@ static void gen_num()
 	// So that we can control the offset easier
 	char _tmp[32];
 	uint32_t _tmp_offset = 31;		
-	while(rand_num != 0 && _tmp_offset != -1)
-	{
+	while(rand_num != 0 && _tmp_offset != -1) {
 		_tmp[_tmp_offset--] = rand_num % 10 + '0';
 		rand_num /= 10;
 	}
@@ -72,13 +70,11 @@ static void gen_num()
 static void gen_rand_expr() {
 	//We need a base case here
 	//Is this a effective solution?
-	if (buf_offset > 65520) 
-	{
+	if (buf_offset > 65400) {
 		gen_num();
 		return ;
 	}
-	switch (choose(rand()))
-	{
+	switch (choose(rand())) {
 		case 0:
 			gen_num();
 			break;
@@ -104,6 +100,7 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+	buf_offset = 0;
     gen_rand_expr();
 	buf[buf_offset++] = '\0';
     sprintf(code_buf, code_format, buf);
