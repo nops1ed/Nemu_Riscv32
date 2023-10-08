@@ -76,7 +76,7 @@ static int cmd_info(char *args) {
 		isa_reg_display();
 //  else if 
   else {
-    char buf[] = "54* 4 * 3 / 2 - 1";
+    char buf[] = "540* 4 * 3 / 2 - 1";
     bool success = true;
     word_t ret_val = expr(buf , &success);
     if (success)
