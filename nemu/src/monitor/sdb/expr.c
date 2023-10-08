@@ -47,14 +47,14 @@ static struct rule {
 	{"\\-", TK_MINUS},					// minus
 	{"\\*", TK_MULTI},					// multi
 	{"\\/", TK_DIV},					// divide
-	{"\\(", TK_LBT},					// left bracket
-	{"\\)", TK_RBT},					// right bracket
-	{"\\[$]{1}\\w{1,}" , TK_REG},		// register
+	//{"\\(", TK_LBT},					// left bracket
+	//{"\\)", TK_RBT},					// right bracket
+	//{"\\[$]{1}\\w{1,}" , TK_REG},		// register
 	{"[0-9]+" , TK_DEC},			// decimal number								
-	{"\\0\\x\\d{1,}",TK_HEX}, 		// hex number
-	{"==", TK_EQ},						// equal
-	{"!=" , TK_NEQ},					// bool not equal
-	{"&&" , TK_LAND} ,					// logical and
+	//{"\\0\\x\\d{1,}",TK_HEX}, 		// hex number
+	//{"==", TK_EQ},						// equal
+	//{"!=" , TK_NEQ},					// bool not equal
+	//{"&&" , TK_LAND} ,					// logical and
 															// TODO
 };
 
