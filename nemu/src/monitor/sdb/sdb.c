@@ -75,8 +75,16 @@ static int cmd_info(char *args) {
   if (!strcmp(arg , "r"))
 		isa_reg_display();
 //  else if 
-  else 
-    printf("info: Invaild Arguments\n");
+  else {
+    char buf[] = "5 + 4 * 3 / 2 - 1";
+    bool success = true;
+    word_t ret_val = expr(buf , &success);
+    if (success)
+      printf("the val is %u\n" , ret_val);
+    else printf("val failed\n");
+  }
+//  else 
+//    printf("info: Invaild Arguments\n");
   return 0;
 }
 
