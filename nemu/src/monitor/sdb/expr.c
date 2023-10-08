@@ -53,6 +53,7 @@ static struct rule {
 	{"[0-9]*" , TK_DEC},			// decimal number								
 	//{"\\0\\x\\d{1,}",TK_HEX}, 		// hex number
 	{"==", TK_EQ},						// equal
+  	{"\\+", TK_PLUS},					// plus
 	//{"!=" , TK_NEQ},					// bool not equal
 	//{"&&" , TK_LAND} ,					// logical and
 															// TODO
