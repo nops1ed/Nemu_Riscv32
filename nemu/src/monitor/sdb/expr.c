@@ -149,6 +149,7 @@ static bool make_token(char *e) {
 				;
 		}
     }
+	else printf("\nOOPs! Seems like no type got\n");
 }
 	printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
     if (i == NR_REGEX) {
