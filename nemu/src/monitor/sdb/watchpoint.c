@@ -102,7 +102,7 @@ int sdb_watchpoint_create(char *s) {
     printf("\nwatchpoint: too long expression\n");
     return -1;
   }
-  bool success = false;
+  bool success = true;
   word_t val = expr(s , &success);
   if (!success) {
     printf("\nwatchpoint: Bad expression\n");
