@@ -23,12 +23,12 @@
 enum {
 	//TK_INT = 1 ,TK_EQ , TK_PLUS , TK_MINUS , TK_MULTI, TK_DIV , TK_LBT , TK_RBT ,
   	TK_NOTYPE = 256, 
-	TK_LBT = 1 , TK_RBT , TK_NEG , TK_POS , TK_DEREF , TK_GADDR , 				/* Level 0 - 1*/
-	TK_MULTI , TK_DIV , TK_MOD , TK_PLUS , TK_MINUS ,							/* Level 2 - 3*/
+	TK_LBT = 1 , TK_RBT , TK_NEG , TK_POS , TK_DEREF , TK_GADDR , 				/* Tier 0 - 1*/
+	TK_MULTI , TK_DIV , TK_MOD , TK_PLUS , TK_MINUS ,							/* Tier 2 - 3*/
 	TK_EQ , TK_NEQ , TK_LAND , 
 	TK_REG , 
 	TK_DEC, TK_HEX ,  
-	//And so on
+	// And so on
 	/* TODO: Add more token types */
 
 };
@@ -113,26 +113,29 @@ static bool make_token(char *e) {
 			switch (rules[i].token_type) {
 				case TK_DEC :
 					len = substr_len < 31 ? substr_len : 31;
-					//DO NOT USE 'strcpy' !
-					//It may cause buffer overflow
+					/* DO NOT USE 'strcpy' !
+					* It may cause buffer overflow
+					*/
 					strncpy(tokens[nr_token].str , substr_start , len);
 					tokens[nr_token].str[len] = '\0';
 					//printf("\nNow we got %s\n" , tokens[nr_token].str);
 					tokens[nr_token++].type = rules[i].token_type;
 					break;
 				case TK_REG:
-					//Same as TK_DEC case , which just need to change start location
+					// Same as TK_DEC case , which just need to change start location
 					len = substr_len < 32 ? substr_len : 31;
-					//DO NOT USE 'strcpy' !
-					//It may cause buffer overflow
+					/* DO NOT USE 'strcpy' !
+					* It may cause buffer overflow
+					*/
 					strncpy(tokens[nr_token].str , substr_start + 1 , len - 1);
 					tokens[nr_token].str[len] = '\0';
 					tokens[nr_token++].type = rules[i].token_type;
 					break;
 				case TK_HEX:
 					len = substr_len < 33 ? substr_len : 31;
-					//DO NOT USE 'strcpy' !
-					//It may cause buffer overflow
+					/* DO NOT USE 'strcpy' !
+					* It may cause buffer overflow
+					*/
 					strncpy(tokens[nr_token].str , substr_start + 2 , len - 2);
 					tokens[nr_token].str[len] = '\0';
 					tokens[nr_token++].type = rules[i].token_type;
@@ -143,7 +146,7 @@ static bool make_token(char *e) {
 					printf("\nIt seems like u got default branch\n");
 					printf("\nAnd the type could be %d\n", rules[i].token_type);
 					tokens[nr_token++].type = rules[i].token_type;
-					//Do nothing
+					// Do nothing
 					;
 			}
 			flag = true;
@@ -165,10 +168,10 @@ static bool make_token(char *e) {
 
 static bool check_parentheses(int p , int q) {
 	printf("\noops , Seems like u trap into check_parentheses function\n");
-	//check tokens list		
+	// Check tokens list		
 	if (tokens[p++].type != TK_LBT || tokens[q].type != TK_RBT)
 		return false;
-	//simulate stack
+	// Simulate stack
 	uint32_t left_count = 0;
 	for (int i = p ; i <= q ; i++) {
 		switch(tokens[i].type) {
@@ -179,7 +182,7 @@ static bool check_parentheses(int p , int q) {
 				left_count -= 1;
 				break;
 			default:
-				//Do nothing 
+				// Do nothing 
 		}
 		if (left_count == 0 && i < q) return false;
 	}
@@ -244,14 +247,16 @@ static uint32_t eval(int p , int q) {
     	return eval(p + 1, q - 1);
   	}
   	else {
+
 		/*
     	 * op = the position of "Domain OPERATION" in the token expression;
     	 * val1 = eval(p, op - 1);
     	 * val2 = eval(op + 1, q);
 		 */
-		printf("\nI am finding domain from %d to %d\n" , p , q);
+
+		//printf("\nI am finding domain from %d to %d\n" , p , q);
 		uint32_t op = domain_find(p , q);
-		printf("\nThe domain OPERATION could be %d \n" , op);
+		//printf("\nThe domain OPERATION could be %d \n" , op);
 		//printf("\nThe domain OPERATION could be %d \n" , tokens[op].type);
 		if (op == -1) assert(0);
 		printf("\nI am eval %d to %d\n" , p , op - 1);
