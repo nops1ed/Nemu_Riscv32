@@ -161,7 +161,7 @@ static int cmd_d(char *args) {
     printf("Delete all breakpoints? (y or n) ");
     char s;
     if(!scanf("%c" , &s)) {
-      puts("Error scanf\n");
+      puts("Error scanf");
       return 0;
     }
     switch(s) {
