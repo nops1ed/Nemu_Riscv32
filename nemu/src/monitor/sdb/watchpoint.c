@@ -59,12 +59,12 @@ void display_wp (void) {
 
 WP* new_wp() {
 	if (!free_)	return NULL;
+	puts("new");
 	WP *_tmp;
 	for (_tmp = head; _tmp -> next != NULL ; _tmp = _tmp -> next);	
 	_tmp -> next = free_;
 	free_ = free_ -> next;
 	_tmp -> next -> next = NULL;
-	puts("here ");
 	return _tmp -> next;
 }
 
