@@ -138,7 +138,7 @@ static int cmd_p(char *args) {
     printf("A syntax error in expression, near '%s'.\n" , arg);
     return 0;
   }
-  printf("%-10s : %-5d\n" ,arg , val);
+  printf("%-10s : 0x%-5x\n" ,arg , val);
   return 0;
 }
 
