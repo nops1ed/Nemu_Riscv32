@@ -81,7 +81,7 @@ static int cmd_info(char *args) {
       printf("Error got\n");
       return 0;
     }
-    bool success = false;
+    bool success = true;
     word_t val = expr(buf , &success);
     if (!success) {
       printf("Error\n");
