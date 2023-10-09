@@ -154,14 +154,13 @@ static bool make_token(char *e) {
 		//else printf("\nOOPs! Seems like no type got\n");
 		if (flag) break;
 	}
-	printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
+	//printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
     if (i == NR_REGEX) {
     	printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
     	return false;
     }
 }
 	nr_token--;
-	printf("\nnr_token is %d\n" , nr_token);
   	return true;
 }
 
@@ -309,7 +308,6 @@ static bool certain_type (uint32_t type)
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
-	printf("make_token failed\n");
     return 0;
   }
 
@@ -319,6 +317,5 @@ word_t expr(char *e, bool *success) {
 			tokens[i].type = TK_DEREF;
 		}
 	}
-	printf("\nAt least now \n");	
   return eval(0 , nr_token);
 }
