@@ -256,16 +256,18 @@ static uint32_t eval(int p , int q) {
 		uint32_t val1 = eval(p , op - 1);
 		uint32_t val2 = eval(op + 1 , q);
     	switch (tokens[op].type) {
-      		case TK_PLUS: return val1 + val2;
-			case TK_MINUS:return val1 * val2; 
-			case TK_MULTI:return val1 * val2;
+      		case TK_PLUS:  return val1 + val2;
+			case TK_MINUS: return val1 - val2; 
+			case TK_MULTI: return val1 * val2;
 			case TK_DIV:
 				if (val2 == 0) {
 					printf("DIV: SIGFPE \n");
 					assert(0);
 				}
-				else  return val1 / val2;
-      		default: assert(0);
+				else return val1 / val2;
+      		default: 
+				printf("\neval: Seems like u got default branch\nHuh , That is bad\n");
+				assert(0);
     	}
 	}
 }
