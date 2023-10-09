@@ -163,7 +163,7 @@ static bool make_token(char *e) {
 }
 
 static bool check_parentheses(int p , int q) {
-	printf("\noops , Seems like u trap into check_parentheses function\n");
+	//printf("\noops , Seems like u trap into check_parentheses function\n");
 	//check tokens list		
 	if (tokens[p++].type != TK_LBT || tokens[q].type != TK_RBT)
 		return false;
@@ -218,7 +218,7 @@ static uint32_t domain_find(uint32_t p , uint32_t q) {
 			//TODO: Add more number type
 			continue;
 		else {
-			if (domain == -1 || tokens[domain].type >= tokens[i].type)
+			if (domain == -1 || tokens[domain].type <= tokens[i].type)
 				domain = i;
 			//else fo nothing
 		}
