@@ -150,7 +150,7 @@ static bool make_token(char *e) {
 			}
 			flag = true;
     	}
-		else printf("\nOOPs! Seems like no type got\n");
+		//else printf("\nOOPs! Seems like no type got\n");
 		if (flag) break;
 	}
 	printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
