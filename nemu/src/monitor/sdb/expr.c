@@ -173,8 +173,8 @@ static bool check_parentheses(int p , int q) {
 	if (tokens[p++].type != TK_LBT || tokens[q].type != TK_RBT)
 		return false;
 	// Simulate stack
-	uint32_t left_count = 0;
-	for (int i = p ; i < q ; i++) {
+	uint32_t left_count = 1;
+	for (int i = p; i <= q ; i++) {
 		switch(tokens[i].type) {
 			case TK_LBT:
 				left_count += 1;
@@ -184,6 +184,7 @@ static bool check_parentheses(int p , int q) {
 				break;
 			default:
 				// Do nothing 
+				;
 		}
 		if (left_count < 0) {
 			printf("\ncheck_parentheses: Bad expression\n");
