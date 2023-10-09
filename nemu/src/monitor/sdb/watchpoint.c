@@ -97,11 +97,20 @@ void free_wp(int NO) {
 	else _pre -> next = NULL;
 }
 
+void free_wp_all(void) {
+	WP* _tmp = head;
+	while (_tmp) {
+		WP* r = _tmp -> next;
+		_tmp -> next = free_;
+		free_ = _tmp;
+		_tmp = r;
+	}
+	head = NULL;
+}
 
 int sdb_watchpoint_create(char *s) {
   if (!flag) {
 	init_wp_pool();
-	puts("Initialize successfully\n");
 	flag = true;
   } 
   /* Below code detected whether expression is valid instead of creating wp */
@@ -137,8 +146,12 @@ void sdb_watchpoint_delete (int NO) {
   free_wp(NO);
 }
 
+void sdb_watchpoint_delete_all(void) {
+	free_wp_all();
+	/* More debug information required */
+}
+
 void sdb_watchpoint_display(void) {
   display_wp();
   /* More debug information required */
-
 }

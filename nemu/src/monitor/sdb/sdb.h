@@ -22,5 +22,6 @@ word_t expr(char *e, bool *success);
 int sdb_watchpoint_create(char *s);
 void sdb_watchpoint_delete(int NO);
 void sdb_watchpoint_display(void);
+void sdb_watchpoint_delete_all(void);
 
 #endif

@@ -167,7 +167,7 @@ static int cmd_d(char *args) {
     switch(s) {
       case 'Y':
       case 'y':
-        /* delete all WPs */
+        sdb_watchpoint_delete_all();
         return 0;
       case 'N':
       case 'n':
