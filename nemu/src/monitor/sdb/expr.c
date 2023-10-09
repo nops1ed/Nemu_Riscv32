@@ -214,7 +214,7 @@ static uint32_t domain_find(uint32_t p , uint32_t q) {
 				if (left_count == 0) break;
 			}
 			// This should be invalid 
-			if (i >= q) assert(0);
+			if (i > q) assert(0);
 		}	
 		else if (tokens[i].type == TK_RBT)
 			// Bad expression
