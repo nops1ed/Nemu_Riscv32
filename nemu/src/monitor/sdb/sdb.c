@@ -77,7 +77,7 @@ static int cmd_info(char *args) {
     sdb_watchpoint_display();
   else if (!strcmp(arg , "f")) {
     char buf[64];
-    readline(buf);
+    //getline(buf , 64 , 0);
     bool success = true;
     word_t val = expr(buf , &success);
     if (!success) {
@@ -105,15 +105,13 @@ static int cmd_x(char *args) {
     printf("x: Too few Arguments\n");
     return 0;
   }
-  /*
   bool success = false;
   word_t val = expr(arg , &success);
   if (!success) {
     printf("A syntax error in expression, near '%s'." , arg);
     return 0;
   }
-  */
-  //sprintf()
+  printf("So the val is %d\n" , val);
   vaddr_t addr = 0;
   sscanf(arg , "%x" , &addr);
   for (int j = 0 ; j < i ; j++) {
