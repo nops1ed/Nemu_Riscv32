@@ -159,17 +159,15 @@ static int cmd_d(char *args) {
   /* Default behavior indicates deleting all WPs */
   if (!arg) {
     printf("Delete all breakpoints? (y or n) ");
-    char c;
-    if(!scanf("%c" , &c)) {
+    char buf[128];
+    if(!scanf("%c" , buf)) {
       puts("Error scanf");
       return 0;
     }
     /* It does not work on Linux */
     //fflush(0);
-    //if(!scanf("%*s"));
     //if(!scanf("%*[^\n] %*s"));
-    char getBuf;
-    while((getBuf = getchar() !='\n')&& getBuf!=EOF)
+    char c = *buf;
     switch(c) {
       case 'Y':
       case 'y':
