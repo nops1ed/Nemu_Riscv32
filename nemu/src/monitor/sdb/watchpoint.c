@@ -17,11 +17,14 @@
 
 #define NR_WP 32
 
+#define WP_BUF_MAX 64
+
 typedef struct watchpoint {
-  int NO;
-  struct watchpoint *next;
-	word_t stored_expr;	
-	word_t val;
+	int NO;
+	struct watchpoint *next;
+	char stored_expr[WP_BUF_MAX];	
+	word_t old_val;
+	word_t new_val;
 } WP;
 
 static WP wp_pool[NR_WP] = {};
@@ -38,11 +41,22 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-WP* new_wp() {
-	if (!free_) {
-		printf("watchpoint: wp allocation failed\n");
-		assert(0);
+/* Display all watchpoints */
+void display_wp (void) {
+	if (!head) {
+		printf("\nwatchpoint: No watchpoint\n");
+		return;
 	}
+	WP* _tmp = head;
+	printf("%5s %20s %10s\n" , "Num" , "Type" , "What");
+	while(_tmp) {
+		printf("%5d %20s %10s\n" , _tmp -> NO , "hw watchpoint" , _tmp -> stored_expr);
+		_tmp = _tmp -> next;
+	}
+}
+
+WP* new_wp() {
+	if (!free_)	return NULL;
 	WP *_tmp;
 	for (_tmp = head; _tmp -> next != NULL ; _tmp = _tmp -> next);	
 	_tmp -> next = free_;
@@ -51,20 +65,66 @@ WP* new_wp() {
 	return _tmp -> next;
 }
 
-void free_wp(WP *wp) {
+/* We should not expose any detail to external users
+*  So it is better to locate any node we need to delete in our delete function 
+*/
+void free_wp(int NO) {
 	if (!head) {
-		printf("watchpoint: wp free failed\n");
+		printf("\nwatchpoint: wp free failed\n");
 		return;
 	}
+	
 	WP *_tmp = head, *_pre = NULL;
-	//We should always free the last element of head list to keep the sequence of all WPs
-	while(_tmp -> next)
-	{
+	while(_tmp && _tmp -> NO != NO) {
 		_tmp = _tmp -> next;
 		_pre = _pre ? _pre -> next : head;
+	}
+	if (_tmp) {
+		printf("\nwatchpoint: No node with NO%2d could be deleted\n" , NO);
+		return ;
 	}
 	_tmp -> next = free_;
 	free_ = _tmp;
 	if (!_pre) head = _pre;
 	else _pre -> next = NULL;
+}
+
+
+int sdb_watchpoint_create(char *s) {
+  if (sizeof(s) > WP_BUF_MAX) {
+    printf("\nwatchpoint: expression too long\n");
+    return -1;
+  }
+  bool success = false;
+  word_t val = expr(s , &success);
+  if (!success) {
+    printf("\nwatchpoint: Bad expression\n");
+    return -1;
+  }
+
+  WP* _tmp = new_wp();
+  /* Allocation exception */
+  if (!_tmp) {
+    printf("\nwatchpoint: allocation failed\n");
+    return -1;
+  }
+
+  /* Initialize the node */
+  strncpy(_tmp -> stored_expr , s , strlen(s));
+  _tmp -> old_val = val;
+  return _tmp -> NO;
+}
+
+void sdb_watchpoint_delete (int NO) {
+  if (NO > NR_WP || NO < 0) {
+    printf("\nwatchpoint: Invalid watchpoint number\n");
+    return;
+  }
+  free_wp(NO);
+}
+
+void sdb_watchpoint_display(void) {
+  display_wp();
+  /* More debug information required */
+
 }

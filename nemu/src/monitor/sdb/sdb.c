@@ -57,8 +57,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
-static int cmd_si(char *args)
-{	
+static int cmd_si(char *args) {	
   //parse args
   char *arg = strtok(NULL," ");
   int i = 0;
@@ -74,39 +73,37 @@ static int cmd_info(char *args) {
   //Note: feature of fall through
   if (!strcmp(arg , "r"))
 		isa_reg_display();
-//  else if 
+  else if (!strcmp(arg , "w"))
+    sdb_watchpoint_display();
   else {
-    char buf[] = "(4 + 3) * (2 - 1)";
-    bool success = true;
-    word_t ret_val = expr(buf , &success);
-    if (success)
-      printf("the val is %u\n" , ret_val);
-    else printf("val failed\n");
+    printf("Undefined info command: \"%s\".  Try \"help info\".\n" , arg);
   }
-//  else 
-//    printf("info: Invaild Arguments\n");
   return 0;
 }
 
 static int cmd_x(char *args) {
   char *arg = strtok(NULL , " ");
   int i = 0;
-  if (!arg) 
-  {
-    printf("x: Too few Arguments\n");
+  if (!arg) {
+    printf("Scan: Too few Arguments\n");
     return 0;
   } 
   sscanf(arg , "%d" , &i);
   arg = strtok(NULL , " ");
-  if (!arg)
-  {
+  if (!arg) {
     printf("x: Too few Arguments\n");
     return 0;
   }
-  vaddr_t addr = 0;
-  sscanf(arg, "%x" , &addr);
-  for (int j = 0 ; j < i ; j++)
-	{
+  bool success = false;
+  word_t val = expr(arg , &success);
+  if (!success) {
+    printf("A syntax error in expression, near '%s'." , arg);
+    return 0;
+  }
+  //sprintf()
+  vaddr_t addr = val;
+  //sscanf(arg , "%x" , &addr);
+  for (int j = 0 ; j < i ; j++) {
     //printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
 		printf("0x%x: " , addr + 4 * j);
 		for (int k = 3 ; k >= 0 ; k--)
@@ -160,6 +157,7 @@ static int cmd_help(char *args) {
 void sdb_set_batch_mode() {
   is_batch_mode = true;
 }
+
 
 void sdb_mainloop() {
   if (is_batch_mode) {

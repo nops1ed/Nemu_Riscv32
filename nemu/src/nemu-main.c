@@ -27,14 +27,7 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-/*
-  char buf[] = "5 + 4 * 3 / 2 - 1";
-  bool success = true;
-  word_t ret_val = expr(buf , *success);
-  if (success)
-    printf("the val is ret_val\n" , ret_val);
-  else printf("val failed\n");
-  */
+
   /* Start engine. */
   engine_start();
 

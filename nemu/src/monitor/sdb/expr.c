@@ -160,8 +160,6 @@ static bool make_token(char *e) {
     	return false;
     }
 }
-
-	//printf("\nSeems like it is over\n");
 	nr_token--;
   	return true;
 }
@@ -280,6 +278,10 @@ static uint32_t eval(int p , int q) {
 					assert(0);
 				}
 				else return val1 / val2;
+			case TK_MOD: return val1 % val2;
+			case TK_NEQ: return (val1 != val2);
+			case TK_EQ:  return (val1 == val2);
+			case TK_LAND:return (val1 && val2);
       		default: 
 				printf("\neval: Seems like u got default branch\nHuh , That is bad\n");
 				assert(0);
