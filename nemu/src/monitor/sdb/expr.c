@@ -168,6 +168,7 @@ static bool make_token(char *e) {
 
 static bool check_parentheses(int p , int q) {
 	printf("\noops , Seems like u trap into check_parentheses function\n");
+	printf("\np is %d , q is %d\n" , p , q);
 	// Check tokens list		
 	if (tokens[p++].type != TK_LBT || tokens[q].type != TK_RBT)
 		return false;
