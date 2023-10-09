@@ -48,7 +48,7 @@ static struct rule {
 	{"\\/", TK_DIV},					// divide
 	{"\\(", TK_LBT},					// left bracket
 	{"\\)", TK_RBT},					// right bracket
-	{"\\[$]{1}\\w{1,}" , TK_REG},		// register
+	{"[$]{1}w{1,}" , TK_REG},		// register
 	{"0[xX][0-9a-fA-F]*",TK_HEX}, 			// hex number
 	{"[0-9]*" , TK_DEC},			 	// decimal number								
 	{"==", TK_EQ},						// bool equal
