@@ -162,17 +162,15 @@ static bool make_token(char *e) {
   return true;
 }
 
-static bool check_parentheses(int p , int q)
-{
+static bool check_parentheses(int p , int q) {
+	printf("\noops , Seems like u trap into check_parentheses function\n");
 	//check tokens list		
 	if (tokens[p++].type != TK_LBT || tokens[q].type != TK_RBT)
 		return false;
 	//simulate stack
 	uint32_t left_count = 0;
-	for (int i = p ; i <= q ; i++)
-	{
-		switch(tokens[i].type)
-		{
+	for (int i = p ; i <= q ; i++) {
+		switch(tokens[i].type) {
 			case TK_LBT:
 				left_count += 1;
 				break;
@@ -261,7 +259,7 @@ static uint32_t eval(int p , int q) {
 			case TK_MULTI: return val1 * val2;
 			case TK_DIV:
 				if (val2 == 0) {
-					printf("DIV: SIGFPE \n");
+					printf("\neval: SIGFPE \n");
 					assert(0);
 				}
 				else return val1 / val2;
