@@ -187,7 +187,7 @@ static bool check_parentheses(int p , int q) {
 
 static uint32_t domain_find(uint32_t p , uint32_t q) {
 	uint32_t domain = -1;
-	for (int i = p ; i <= q ; i++) {
+	for (int i = p ; i < q ; i++) {
 		/* All of right brackets should be checked in below case  
 		 * Otherwise it could be bad expression 
 		 */
@@ -251,7 +251,7 @@ static uint32_t eval(int p , int q) {
 		uint32_t op = domain_find(p , q);
 		printf("\nThe domain OPERATION could be %d \n" , op);
 		//printf("\nThe domain OPERATION could be %d \n" , tokens[op].type);
-		if (op == -1) assert(0);
+		//if (op == -1) assert(0);
 		uint32_t val1 = eval(p , op - 1);
 		uint32_t val2 = eval(op + 1 , q);
     	switch (tokens[op].type) {
