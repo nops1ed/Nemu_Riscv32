@@ -42,7 +42,6 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
   	{" +", TK_NOTYPE},					// spaces
-	{"\\+" , '+'} ,
   	{"\\+", TK_PLUS},					// plus
 	{"\\-", TK_MINUS},					// minus
 	{"\\*", TK_MULTI},					// multi
