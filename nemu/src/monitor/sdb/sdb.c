@@ -160,8 +160,8 @@ static int cmd_d(char *args) {
   if (!arg) {
     printf("Delete all breakpoints? (y or n) ");
     char buf[128];
-    if(!scanf("%[^\n]*" , buf)) {
-      puts("Error scanf");
+    if(fgets(buf , 128 , 0)) {
+      puts("Valid Arguments\n");
       return 0;
     }
     /* It does not work on Linux */
