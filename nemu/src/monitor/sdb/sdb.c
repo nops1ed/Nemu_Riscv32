@@ -164,6 +164,7 @@ static int cmd_d(char *args) {
       puts("Error scanf");
       return 0;
     }
+    fflush(0);
     switch(s) {
       case 'Y':
       case 'y':
