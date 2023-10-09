@@ -161,6 +161,7 @@ static bool make_token(char *e) {
     }
 }
 	nr_token--;
+	printf("\nnr_token is %d\n" , nr_token);
   	return true;
 }
 
