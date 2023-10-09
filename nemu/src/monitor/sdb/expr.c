@@ -222,7 +222,8 @@ static uint32_t domain_find(uint32_t p , uint32_t q) {
 		else if (tokens[i].type == TK_RBT)
 			// Bad expression
 			assert(0);
-		else if (tokens[i].type == TK_DEC)
+		else if (tokens[i].type == TK_DEC || tokens[i].type == TK_REG
+					|| tokens[i].type == TK_HEX)
 			//TODO: Add more number type
 			continue;
 		else {
