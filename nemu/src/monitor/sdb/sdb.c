@@ -209,16 +209,18 @@ static int cmd_help(char *args) {
 
   if (arg == NULL) {
     /* no argument given */
+    puts("List of classes of commands:");
     for (i = 0; i < NR_CMD; i ++) {
       printf("%-5s - %-20s\n", cmd_table[i].name, cmd_table[i].description);
     }
+    puts("Type \"help\" followed by command name for full documentation.");
   }
   else {
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%-5s - %-20s\n", cmd_table[i].name, cmd_table[i].description);
         //TODO
-        puts("And more descriptions todo ...");
+        puts("Full descriptions todo ...");
         return 0;
       }
     }
