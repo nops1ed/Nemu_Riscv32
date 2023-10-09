@@ -162,6 +162,7 @@ static bool make_token(char *e) {
 }
 
 	printf("\nSeems like it is over\n");
+	nr_token--;
   	return true;
 }
 
@@ -173,7 +174,7 @@ static bool check_parentheses(int p , int q) {
 		return false;
 	// Simulate stack
 	uint32_t left_count = 0;
-	for (int i = p ; i < q ; i++) {
+	for (int i = p ; i <= q ; i++) {
 		switch(tokens[i].type) {
 			case TK_LBT:
 				left_count += 1;
