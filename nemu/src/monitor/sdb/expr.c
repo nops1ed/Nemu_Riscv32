@@ -46,15 +46,14 @@ static struct rule {
 	{"\\-", TK_MINUS},					// minus
 	{"\\*", TK_MULTI},					// multi
 	{"\\/", TK_DIV},					// divide
-	//{"\\(", TK_LBT},					// left bracket
-	//{"\\)", TK_RBT},					// right bracket
-	//{"\\[$]{1}\\w{1,}" , TK_REG},		// register
-	{"[0-9]*" , TK_DEC},			// decimal number								
-	//{"\\0\\x\\d{1,}",TK_HEX}, 		// hex number
-	{"==", TK_EQ},						// equal
-  	{"\\+", TK_PLUS},					// plus
-	//{"!=" , TK_NEQ},					// bool not equal
-	//{"&&" , TK_LAND} ,					// logical and
+	{"\\(", TK_LBT},					// left bracket
+	{"\\)", TK_RBT},					// right bracket
+	{"\\[$]{1}\\w{1,}" , TK_REG},		// register
+	{"[0-9]*" , TK_DEC},			 	// decimal number								
+	{"\\0\\x\\d{1,}",TK_HEX}, 			// hex number
+	{"==", TK_EQ},						// bool equal
+	{"!=" , TK_NEQ},					// bool not equal
+	{"&&" , TK_LAND} ,					// logical and
 															// TODO
 };
 
@@ -188,20 +187,16 @@ static bool check_parentheses(int p , int q)
 	return true;
 }
 
-static uint32_t domain_find(uint32_t p , uint32_t q)
-{
+static uint32_t domain_find(uint32_t p , uint32_t q) {
 	uint32_t domain = -1;
-	for (int i = p ; i < q ; i++)
-	{
-		//All of right brackets should be checked in below case  
-		//otherwise it is invalid condition
-		if (tokens[i].type == TK_LBT)
-		{
+	for (int i = p ; i < q ; i++) {
+		/* All of right brackets should be checked in below case  
+		 * Otherwise it could be bad expression 
+		 */
+		if (tokens[i].type == TK_LBT) {
 			uint32_t left_count = 1;	
-			while(++i < q)
-			{
-				switch(tokens[i].type)
-				{
+			while(++i < q) {
+				switch(tokens[i].type) {
 					case TK_LBT:
 						left_count += 1;
 						break;
@@ -209,22 +204,22 @@ static uint32_t domain_find(uint32_t p , uint32_t q)
 						left_count -= 1;
 						break;
 					default:
-						//No domain token should be here
-						//So just Do nothing
+						// No domain token should be here
+						// So just Do nothing
 						;
 				}
 				if (left_count == 0) break;
 			}
-			//This should be invaild 
+			// This should be invalid 
 			if (i >= q) assert(0);
 		}	
 		else if (tokens[i].type == TK_RBT)
-			//Bad expression
+			// Bad expression
 			assert(0);
 		else if (tokens[i].type == TK_DEC)
+			//TODO: Add more number type
 			continue;
-		else
-		{
+		else {
 			if (domain == -1 || tokens[domain].type >= tokens[i].type)
 				domain = i;
 			//else fo nothing
@@ -235,28 +230,28 @@ static uint32_t domain_find(uint32_t p , uint32_t q)
 
 
 static uint32_t eval(int p , int q) {
-	//Invaild case
+	// Bad expression
   	if (p > q) {
-		printf("Invaild erxpersion\n");
+		printf("\n eval: Bad erxpersion\n");
 		assert(0);
   	}
-	//Consider it as a number
+	// Consider it as a number
   	else if (p == q) {
 		int ret_val;
 		sscanf(tokens[p].str , "%d" , &ret_val);
 		return ret_val;
 	}
-  	else if (check_parentheses(p, q) == true) {
+  	else if (check_parentheses(p, q)) {
     	return eval(p + 1, q - 1);
   	}
   	else {
 		/*
-    	* op = the position of "Domain OPERATION" in the token expression;
-    	* val1 = eval(p, op - 1);
-    	* val2 = eval(op + 1, q);
-		*/
+    	 * op = the position of "Domain OPERATION" in the token expression;
+    	 * val1 = eval(p, op - 1);
+    	 * val2 = eval(op + 1, q);
+		 */
 		uint32_t op = domain_find(p , q);
-		printf("\nThe domain OPERATION could be %d \n" , op);
+		printf("\nThe domain OPERATION could be %d \n" , tokens[op].type);
 		if (op == -1) assert(0);
 		uint32_t val1 = eval(p , op - 1);
 		uint32_t val2 = eval(op + 1 , q);
