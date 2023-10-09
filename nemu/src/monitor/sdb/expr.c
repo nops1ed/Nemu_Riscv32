@@ -119,7 +119,7 @@ static bool make_token(char *e) {
 					//It may cause buffer overflow
 					strncpy(tokens[nr_token].str , substr_start , len);
 					//tokens[nr_token].str[len] = '\0';
-					printf("\nNow we got %s\n" , tokens[nr_token].str);
+					//printf("\nNow we got %s\n" , tokens[nr_token].str);
 					tokens[nr_token++].type = rules[i].token_type;
 					break;
 				case TK_REG:
