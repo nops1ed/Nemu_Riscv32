@@ -264,7 +264,7 @@ static uint32_t eval(int p , int q) {
 
 	}
   	else if (check_parentheses(p, q)) {
-		//printf("\nHere we detected parentheses\n");
+		printf("\nHere we detected parentheses\n");
     	return eval(p + 1, q - 1);
   	}
   	else {
