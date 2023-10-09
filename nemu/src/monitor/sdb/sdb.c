@@ -164,7 +164,9 @@ static int cmd_d(char *args) {
       puts("Error scanf");
       return 0;
     }
-    fflush(0);
+    /* It does not work on Linux */
+    //fflush(0);
+    if(!scanf("%*[^\n] %*c"));
     switch(s) {
       case 'Y':
       case 'y':
