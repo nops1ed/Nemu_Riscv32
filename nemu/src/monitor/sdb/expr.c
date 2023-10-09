@@ -187,7 +187,7 @@ static bool check_parentheses(int p , int q) {
 
 static uint32_t domain_find(uint32_t p , uint32_t q) {
 	uint32_t domain = -1;
-	for (int i = p ; i < q ; i++) {
+	for (int i = p ; i <= q ; i++) {
 		/* All of right brackets should be checked in below case  
 		 * Otherwise it could be bad expression 
 		 */
