@@ -49,8 +49,8 @@ static struct rule {
 	{"\\(", TK_LBT},					// left bracket
 	{"\\)", TK_RBT},					// right bracket
 	{"\\[$]{1}\\w{1,}" , TK_REG},		// register
-	{"[0-9]*" , TK_DEC},			 	// decimal number								
 	{"\\0\\x\\d{1,}",TK_HEX}, 			// hex number
+	{"[0-9]*" , TK_DEC},			 	// decimal number								
 	{"==", TK_EQ},						// bool equal
 	{"!=" , TK_NEQ},					// bool not equal
 	{"&&" , TK_LAND} ,					// logical and
