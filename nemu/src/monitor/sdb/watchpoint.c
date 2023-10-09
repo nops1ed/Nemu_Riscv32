@@ -58,16 +58,13 @@ void display_wp (void) {
 }
 
 WP* new_wp() {
-	if (!flag) {
-		init_wp_pool();
-		flag = true;
-	}
 	if (!free_)	return NULL;
 	WP *_tmp;
 	for (_tmp = head; _tmp -> next != NULL ; _tmp = _tmp -> next);	
 	_tmp -> next = free_;
 	free_ = free_ -> next;
 	_tmp -> next -> next = NULL;
+	puts("here ");
 	return _tmp -> next;
 }
 
@@ -97,6 +94,10 @@ void free_wp(int NO) {
 
 
 int sdb_watchpoint_create(char *s) {
+  if (!flag) {
+	init_wp_pool();
+	flag = true;
+  } 
   /* Below code detected whether expression is valid instead of creating wp */
   if (sizeof(s) > WP_BUF_MAX) {
     printf("\nwatchpoint: too long expression\n");
