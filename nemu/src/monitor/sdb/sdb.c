@@ -218,7 +218,7 @@ static int cmd_help(char *args) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%-5s - %-20s\n", cmd_table[i].name, cmd_table[i].description);
         //TODO
-        puts("And more descriptions todo ...\n");
+        puts("And more descriptions todo ...");
         return 0;
       }
     }
