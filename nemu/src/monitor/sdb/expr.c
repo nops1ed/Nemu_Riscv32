@@ -159,7 +159,8 @@ static bool make_token(char *e) {
 }
 
 	printf("\nSeems like it is over\n");
-  return true;
+	nr_token--;
+  	return true;
 }
 
 static bool check_parentheses(int p , int q) {
