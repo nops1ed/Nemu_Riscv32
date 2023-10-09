@@ -75,6 +75,20 @@ static int cmd_info(char *args) {
 		isa_reg_display();
   else if (!strcmp(arg , "w"))
     sdb_watchpoint_display();
+  else if (!strcmp(arg , "f")) {
+    char buf[64];
+    if (!scanf("%s" , buf)) {
+      printf("Error got\n");
+      return 0;
+    }
+    bool success = false;
+    word_t val = expr(buf , &success);
+    if (!success) {
+      printf("Error\n");
+      return 0;
+    }
+    else printf("The val is %d\n" , val);
+  }
   else {
     printf("Undefined info command: \"%s\".  Try \"help info\".\n" , arg);
   }
