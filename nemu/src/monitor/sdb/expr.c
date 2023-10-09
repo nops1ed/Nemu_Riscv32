@@ -309,6 +309,7 @@ static bool certain_type (uint32_t type)
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
+	printf("make_token failed\n");
     return 0;
   }
 
