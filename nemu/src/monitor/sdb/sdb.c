@@ -76,11 +76,14 @@ static int cmd_info(char *args) {
   else if (!strcmp(arg , "w"))
     sdb_watchpoint_display();
   else if (!strcmp(arg , "f")) {
+    /*
     char buf[64];
     if (!scanf("%s" , buf)) {
       printf("Error got\n");
       return 0;
     }
+    */
+    char buf[] = "3 + 5";
     bool success = true;
     word_t val = expr(buf , &success);
     if (!success) {
