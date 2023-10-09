@@ -189,7 +189,11 @@ static bool check_parentheses(int p , int q) {
 			printf("\ncheck_parentheses: Bad expression\n");
 			assert(0);
 		}
-		if (left_count == 0 && i < q) return false;
+		if (left_count == 0 && i < q) 
+		{
+			printf("\nHuh , Unexpected\n");
+			return false;
+		}
 	}
 	return true;
 }
