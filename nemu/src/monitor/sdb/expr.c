@@ -174,7 +174,7 @@ static bool check_parentheses(int p , int q) {
 		return false;
 	// Simulate stack
 	uint32_t left_count = 0;
-	for (int i = p ; i <= q ; i++) {
+	for (int i = p ; i < q ; i++) {
 		switch(tokens[i].type) {
 			case TK_LBT:
 				left_count += 1;
@@ -184,6 +184,10 @@ static bool check_parentheses(int p , int q) {
 				break;
 			default:
 				// Do nothing 
+		}
+		if (left_count < 0) {
+			printf("\ncheck_parentheses: Bad expression\n");
+			assert(0);
 		}
 		if (left_count == 0 && i < q) return false;
 	}
