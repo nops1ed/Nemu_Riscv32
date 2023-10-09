@@ -105,10 +105,10 @@ static int cmd_x(char *args) {
     printf("x: Too few Arguments\n");
     return 0;
   }
-  bool success = false;
+  bool success = true;
   word_t val = expr(arg , &success);
   if (!success) {
-    printf("A syntax error in expression, near '%s'." , arg);
+    printf("A syntax error in expression, near '%s'.\n" , arg);
     return 0;
   }
   printf("So the val is %d\n" , val);
