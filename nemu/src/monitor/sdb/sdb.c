@@ -166,8 +166,8 @@ static int cmd_d(char *args) {
     }
     /* It does not work on Linux */
     //fflush(0);
-    if(!scanf("%*s"));
-    //if(!scanf("%*[^\n] %*c"));
+    //if(!scanf("%*s"));
+    if(!scanf("%*[^\n] %*s"));
     switch(c) {
       case 'Y':
       case 'y':
