@@ -159,8 +159,8 @@ static int cmd_d(char *args) {
   /* Default behavior indicates deleting all WPs */
   if (!arg) {
     printf("Delete all breakpoints? (y or n) ");
-    char s;
-    if(!scanf("%c" , &s)) {
+    char c;
+    if(!scanf("%c" , &c)) {
       puts("Error scanf");
       return 0;
     }
@@ -168,7 +168,7 @@ static int cmd_d(char *args) {
     //fflush(0);
     if(!scanf("%*s"));
     //if(!scanf("%*[^\n] %*c"));
-    switch(s) {
+    switch(c) {
       case 'Y':
       case 'y':
         sdb_watchpoint_delete_all();
@@ -177,7 +177,7 @@ static int cmd_d(char *args) {
       case 'n':
         return 0;
       default:
-        printf("Undefined choice %c\n" , s);
+        printf("\nUndefined choice %c\n" , c);
         return 0;
     }
   }
