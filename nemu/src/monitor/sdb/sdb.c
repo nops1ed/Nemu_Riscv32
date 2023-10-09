@@ -94,15 +94,17 @@ static int cmd_x(char *args) {
     printf("x: Too few Arguments\n");
     return 0;
   }
+  /*
   bool success = false;
   word_t val = expr(arg , &success);
   if (!success) {
     printf("A syntax error in expression, near '%s'." , arg);
     return 0;
   }
+  */
   //sprintf()
-  vaddr_t addr = val;
-  //sscanf(arg , "%x" , &addr);
+  vaddr_t addr = 0;
+  sscanf(arg , "%x" , &addr);
   for (int j = 0 ; j < i ; j++) {
     //printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
 		printf("0x%x: " , addr + 4 * j);
