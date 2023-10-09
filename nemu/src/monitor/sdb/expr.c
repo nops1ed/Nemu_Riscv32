@@ -23,7 +23,7 @@
 enum {
 	//TK_INT = 1 ,TK_EQ , TK_PLUS , TK_MINUS , TK_MULTI, TK_DIV , TK_LBT , TK_RBT ,
   	TK_NOTYPE = 256, 
-	TK_LBT = 1 , TK_RBT , TK_NEG , TK_POS , TK_DEREF , TK_GADDR , /* Level 0 - 1*/
+	TK_LBT = 1 , TK_RBT , TK_NEG , TK_POS , TK_DEREF , TK_GADDR , 				/* Level 0 - 1*/
 	TK_MULTI , TK_DIV , TK_MOD , TK_PLUS , TK_MINUS ,							/* Level 2 - 3*/
 	TK_EQ , TK_NEQ , TK_LAND , 
 	TK_REG , 
