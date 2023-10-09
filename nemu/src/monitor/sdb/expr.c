@@ -275,14 +275,14 @@ static uint32_t eval(int p , int q) {
     	 * val2 = eval(op + 1, q);
 		 */
 
-		//printf("\nI am finding domain from %d to %d\n" , p , q);
+		printf("\nI am finding domain from %d to %d\n" , p , q);
 		uint32_t op = domain_find(p , q);
-		//printf("\nThe domain OPERATION could be %d \n" , op);
-		//printf("\nThe domain OPERATION could be %d \n" , tokens[op].type);
+		printf("\nThe domain OPERATION could be %d \n" , op);
+		printf("\nThe domain OPERATION could be %d \n" , tokens[op].type);
 		if (op == -1) assert(0);
-		//printf("\nI am eval %d to %d\n" , p , op - 1);
+		printf("\nI am eval %d to %d\n" , p , op - 1);
 		uint32_t val1 = eval(p , op - 1);
-		//printf("\nI am eval %d to %d\n" , op + 1 , q);
+		printf("\nI am eval %d to %d\n" , op + 1 , q);
 		uint32_t val2 = eval(op + 1 , q);
     	switch (tokens[op].type) {
       		case TK_PLUS:  return val1 + val2;
