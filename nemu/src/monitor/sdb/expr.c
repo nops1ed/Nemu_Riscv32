@@ -143,8 +143,8 @@ static bool make_token(char *e) {
 				case TK_NOTYPE:
 					break;
           		default: 
-					printf("\nIt seems like u got default branch\n");
-					printf("\nAnd the type could be %d\n", rules[i].token_type);
+					//printf("\nIt seems like u got default branch\n");
+					//printf("\nAnd the type could be %d\n", rules[i].token_type);
 					tokens[nr_token++].type = rules[i].token_type;
 					// Do nothing
 					;
@@ -154,14 +154,14 @@ static bool make_token(char *e) {
 		//else printf("\nOOPs! Seems like no type got\n");
 		if (flag) break;
 	}
-	printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
+	//printf("\nNow i = %d , NR_REGEX = %d\n" , i , NR_REGEX);
     if (i == NR_REGEX) {
     	printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
     	return false;
     }
 }
 
-	printf("\nSeems like it is over\n");
+	//printf("\nSeems like it is over\n");
 	nr_token--;
   	return true;
 }
@@ -250,7 +250,7 @@ static uint32_t eval(int p , int q) {
 		return ret_val;
 	}
   	else if (check_parentheses(p, q)) {
-		printf("\nHere we detected parentheses\n");
+		//printf("\nHere we detected parentheses\n");
     	return eval(p + 1, q - 1);
   	}
   	else {
