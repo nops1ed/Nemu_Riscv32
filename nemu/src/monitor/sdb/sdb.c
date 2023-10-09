@@ -126,6 +126,22 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+static int cmd_p(char *args) {
+  char *arg = strtok(NULL , " ");
+  if (!arg) {
+    printf("x: Too few Arguments\n");
+    return 0;
+  }
+  bool success = true;
+  word_t val = expr(arg , &success);
+  if (!success) {
+    printf("A syntax error in expression, near '%s'.\n" , arg);
+    return 0;
+  }
+  printf("%10s : %5d\n" ,arg , val);
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -137,6 +153,7 @@ static struct {
   { "si" , "Execute by single step" , cmd_si },
   { "info" , "Show information" , cmd_info },
   { "x" , "Scan Memory" , cmd_x },
+  { "p" , "evaluate the expression" , cmd_p },
   /* TODO: Add more commands */
 
 };
