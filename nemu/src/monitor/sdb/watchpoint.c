@@ -29,6 +29,8 @@ typedef struct watchpoint {
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+/* Indicate whether wp_pool is initialized */
+static bool flag = false;
 
 void init_wp_pool() {
   int i;
@@ -56,6 +58,10 @@ void display_wp (void) {
 }
 
 WP* new_wp() {
+	if (!flag) {
+		init_wp_pool();
+		flag = true;
+	}
 	if (!free_)	return NULL;
 	WP *_tmp;
 	for (_tmp = head; _tmp -> next != NULL ; _tmp = _tmp -> next);	
@@ -91,8 +97,9 @@ void free_wp(int NO) {
 
 
 int sdb_watchpoint_create(char *s) {
+  /* Below code detected whether expression is valid instead of creating wp */
   if (sizeof(s) > WP_BUF_MAX) {
-    printf("\nwatchpoint: expression too long\n");
+    printf("\nwatchpoint: too long expression\n");
     return -1;
   }
   bool success = false;
@@ -117,7 +124,7 @@ int sdb_watchpoint_create(char *s) {
 
 void sdb_watchpoint_delete (int NO) {
   if (NO > NR_WP || NO < 0) {
-    printf("\nwatchpoint: Invalid watchpoint number\n");
+    printf("\nValid watchpoint number should between 0 and %d\n" , NR_WP - 1);
     return;
   }
   free_wp(NO);

@@ -21,10 +21,9 @@
 #include <regex.h>
 
 enum {
-	//TK_INT = 1 ,TK_EQ , TK_PLUS , TK_MINUS , TK_MULTI, TK_DIV , TK_LBT , TK_RBT ,
   	TK_NOTYPE = 256, 
-	TK_LBT = 1 , TK_RBT , TK_NEG , TK_POS , TK_DEREF , TK_GADDR , 				/* Tier 0 - 1*/
-	TK_MULTI , TK_DIV , TK_MOD , TK_PLUS , TK_MINUS ,							/* Tier 2 - 3*/
+	TK_LBT = 1 , TK_RBT , TK_NEG , TK_POS , TK_DEREF , TK_GADDR , 	/* Tier 0 - 1*/
+	TK_MULTI , TK_DIV , TK_MOD , TK_PLUS , TK_MINUS ,				/* Tier 2 - 3*/
 	TK_EQ , TK_NEQ , TK_LAND , 
 	TK_REG , 
 	TK_DEC, TK_HEX ,  
@@ -48,8 +47,8 @@ static struct rule {
 	{"\\/", TK_DIV},					// divide
 	{"\\(", TK_LBT},					// left bracket
 	{"\\)", TK_RBT},					// right bracket
-	{"\\$[a-zA-Z]*[0-9]*" , TK_REG},		// register
-	{"0[xX][0-9a-fA-F]*",TK_HEX}, 			// hex number
+	{"\\$[a-zA-Z]*[0-9]*" , TK_REG},	// register
+	{"0[Xx][0-9a-fA-F]*",TK_HEX}, 		// hex number
 	{"[0-9]*" , TK_DEC},			 	// decimal number								
 	{"==", TK_EQ},						// bool equal
 	{"!=" , TK_NEQ},					// bool not equal
@@ -100,8 +99,8 @@ static bool make_token(char *e) {
         	char *substr_start = e + position;
         	int substr_len = pmatch.rm_eo;
 
-        	//Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            //	i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        	Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+            	i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
 			position += substr_len;
 

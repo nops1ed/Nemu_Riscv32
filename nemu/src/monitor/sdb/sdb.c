@@ -129,7 +129,7 @@ static int cmd_x(char *args) {
 static int cmd_p(char *args) {
   char *arg = strtok(NULL , "\0");
   if (!arg) {
-    printf("x: Too few Arguments\n");
+    printf("Missing Arguments. \n");
     return 0;
   }
   bool success = true;
@@ -139,6 +139,47 @@ static int cmd_p(char *args) {
     return 0;
   }
   printf("%-10s : 0x%-5x\n" ,arg , val);
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  char *arg = strtok(NULL , "\0");
+  if (!arg) {
+    printf("Missing Arguments. \n");
+    return 0;
+  }
+  int wp_no = sdb_watchpoint_create(arg);
+  if (wp_no == -1) return 0;
+  printf("Hardware watchpoint %d: %s\n" , wp_no , arg);
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  char *arg = strtok(NULL , "\0");
+  /* Default behavior indicates deleting all WPs */
+  if (!arg) {
+    printf("Delete all breakpoints? (y or n) ");
+    char s;
+    if(!scanf("%c" , &s)) {
+      puts("Error scanf\n");
+      return 0;
+    }
+    switch(s) {
+      case 'Y':
+      case 'y':
+        /* delete all WPs */
+        return 0;
+      case 'N':
+      case 'n':
+        return 0;
+      default:
+        printf("Undefined choice %c\n" , s);
+        return 0;
+    }
+  }
+  int wp_no;
+  sscanf(arg , "%d" , &wp_no);
+  sdb_watchpoint_delete(wp_no);
   return 0;
 }
 
@@ -153,9 +194,10 @@ static struct {
   { "si" , "Execute by single step" , cmd_si },
   { "info" , "Show information" , cmd_info },
   { "x" , "Scan Memory" , cmd_x },
-  { "p" , "evaluate the expression" , cmd_p },
-  /* TODO: Add more commands */
-
+  { "p" , "Evaluate the expression" , cmd_p },
+  { "w" , "Set watchpoint" , cmd_w },
+  { "d" , "Delete watchpoint" , cmd_d },
+//{ "b" , "Set breakpoint" , cmd_b },
 };
 
 #define NR_CMD ARRLEN(cmd_table)
