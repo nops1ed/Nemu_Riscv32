@@ -100,7 +100,7 @@ static int cmd_x(char *args) {
     return 0;
   } 
   sscanf(arg , "%d" , &i);
-  arg = strtok(NULL , " ");
+  arg = strtok(NULL , "\0");
   if (!arg) {
     printf("x: Too few Arguments\n");
     return 0;

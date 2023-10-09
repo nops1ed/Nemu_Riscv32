@@ -127,7 +127,7 @@ static bool make_token(char *e) {
 					/* DO NOT USE 'strcpy' !
 					* It may cause buffer overflow
 					*/
-					strncpy(tokens[nr_token].str , substr_start + 1 , len - 1);
+					strncpy(tokens[nr_token].str , substr_start , len);
 					tokens[nr_token].str[len] = '\0';
 					tokens[nr_token++].type = rules[i].token_type;
 					break;
@@ -241,11 +241,27 @@ static uint32_t eval(int p , int q) {
 		printf("\n eval: Bad erxpersion\n");
 		assert(0);
   	}
-	// Consider it as a number
+	/* This could be decimal , hex , addr , register or dereference */
   	else if (p == q) {
-		int ret_val;
-		sscanf(tokens[p].str , "%d" , &ret_val);
-		return ret_val;
+		switch(tokens[p].type)
+		{
+			case TK_DEC:
+			case TK_HEX:
+				int dec_val;
+				sscanf(tokens[p].str , "%d" , &dec_val);
+				return dec_val;
+			case TK_REG:
+				bool success = true;
+				word_t reg_val = isa_reg_str2val(tokens[p].str , &success);
+				if (!success) {
+					printf("\nNo reg:%s found\n" , tokens[p].str);
+					return 0;
+				}
+				return reg_val;
+			default:
+				return 0;
+		}
+
 	}
   	else if (check_parentheses(p, q)) {
 		//printf("\nHere we detected parentheses\n");
