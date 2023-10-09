@@ -319,6 +319,6 @@ word_t expr(char *e, bool *success) {
 			tokens[i].type = TK_DEREF;
 		}
 	}
-	
+	printf("\nAt least now \n");	
   return eval(0 , nr_token);
 }
