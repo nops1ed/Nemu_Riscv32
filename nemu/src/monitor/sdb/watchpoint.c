@@ -46,7 +46,7 @@ void init_wp_pool() {
 /* Display all watchpoints */
 void display_wp (void) {
 	if (!head) {
-		printf("\nwatchpoint: No watchpoint\n");
+		printf("watchpoint: No watchpoint\n");
 		return;
 	}
 	WP* _tmp = head;
@@ -78,7 +78,7 @@ WP* new_wp() {
 */
 void free_wp(int NO) {
 	if (!head) {
-		printf("\nwatchpoint: wp free failed\n");
+		printf("watchpoint: wp free failed\n");
 		return;
 	}
 	
@@ -88,7 +88,7 @@ void free_wp(int NO) {
 		_pre = _pre ? _pre -> next : head;
 	}
 	if (_tmp) {
-		printf("\nwatchpoint: No node with NO%2d could be deleted\n" , NO);
+		printf("watchpoint: No node with NO%2d could be deleted\n" , NO);
 		return ;
 	}
 	_tmp -> next = free_;
@@ -115,20 +115,20 @@ int sdb_watchpoint_create(char *s) {
   } 
   /* Below code detected whether expression is valid instead of creating wp */
   if (sizeof(s) > WP_BUF_MAX) {
-    printf("\nwatchpoint: too long expression\n");
+    printf("watchpoint: too long expression\n");
     return -1;
   }
   bool success = true;
   word_t val = expr(s , &success);
   if (!success) {
-    printf("\nwatchpoint: Bad expression\n");
+    printf("watchpoint: Bad expression\n");
     return -1;
   }
 
   WP* _tmp = new_wp();
   /* Allocation exception */
   if (!_tmp) {
-    printf("\nwatchpoint: allocation failed\n");
+    printf("watchpoint: allocation failed\n");
     return -1;
   }
 
@@ -140,7 +140,7 @@ int sdb_watchpoint_create(char *s) {
 
 void sdb_watchpoint_delete (int NO) {
   if (NO > NR_WP || NO < 0) {
-    printf("\nValid watchpoint number should between 0 and %d\n" , NR_WP - 1);
+    printf("Valid watchpoint number should between 0 and %d\n" , NR_WP - 1);
     return;
   }
   free_wp(NO);
