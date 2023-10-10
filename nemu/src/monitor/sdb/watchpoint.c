@@ -87,7 +87,7 @@ void free_wp(int NO) {
 		_tmp = _tmp -> next;
 		_pre = _pre ? _pre -> next : head;
 	}
-	if (_tmp) {
+	if (!_tmp) {
 		printf("watchpoint: No node with NO%2d could be deleted\n" , NO);
 		return ;
 	}
