@@ -183,6 +183,7 @@ bool trace_watchpoint_diff_test(void) {
 		trace_flag = true;
 	}	
 	else _tmp -> flag = false;
+	_tmp = _tmp -> next;
   }
   return trace_flag;
 }
