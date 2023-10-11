@@ -91,10 +91,16 @@ void free_wp(int NO) {
 		printf("watchpoint: No node with NO%2d could be deleted\n" , NO);
 		return ;
 	}
-	_tmp -> next = free_;
-	free_ = _tmp;
-	if (!_pre) head = _pre;
-	else _pre -> next = NULL;
+	if (!_pre) {
+		_pre -> next = _tmp -> next;
+		_tmp -> next = free_;
+		free_ = _tmp;
+	}
+	else {
+		_tmp -> next = free_;
+		free_ = _tmp;
+		head = _pre;
+	}
 }
 
 void free_wp_all(void) {
