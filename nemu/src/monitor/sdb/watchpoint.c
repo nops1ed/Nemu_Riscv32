@@ -94,9 +94,7 @@ void free_wp(int NO) {
 	if (_pre) _pre -> next = _tmp -> next;
 	else head = _tmp -> next;
 	WP* tail = free_;
-	while (tail && tail -> next) {
-		tail = tail -> next;
-	}
+	while (tail && tail -> next) tail = tail -> next;
 	if (!tail) {
 		_tmp -> next = tail;
 		free_ = _tmp;
