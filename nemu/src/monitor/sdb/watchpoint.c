@@ -23,8 +23,8 @@ typedef struct watchpoint {
 	int NO;
 	struct watchpoint *next;
 	char stored_expr[WP_BUF_MAX];	
-	word_t old_val;
-	word_t new_val;
+	bool flag;
+	word_t old_val , new_val;
 } WP;
 
 static WP wp_pool[NR_WP] = {};
@@ -70,6 +70,7 @@ WP* new_wp() {
 	_tmp -> next = free_;
 	free_ = free_ -> next;
 	_tmp -> next -> next = NULL;
+	_tmp -> next -> flag = false;
 	return _tmp -> next;
 }
 
@@ -142,7 +143,7 @@ int sdb_watchpoint_create(char *s) {
 
   /* Initialize the node */
   strncpy(_tmp -> stored_expr , s , strlen(s));
-  _tmp -> old_val = val;
+  _tmp -> old_val = _tmp -> new_val = val;
   return _tmp -> NO;
 }
 
@@ -162,4 +163,36 @@ void sdb_watchpoint_delete_all(void) {
 void sdb_watchpoint_display(void) {
   display_wp();
   /* More debug information required */
+}
+
+bool trace_watchpoint_diff_test(void) {
+  /* trace all watchpoints and difftest */
+  bool trace_flag = false;
+  WP* _tmp = head;
+  while (_tmp) {
+	bool success = true;
+	word_t val = expr(_tmp -> stored_expr , &success);
+	if (!success) {
+		printf("trace: eval error\n");
+		assert(0);
+	}
+	if (_tmp -> new_val != val) {
+		_tmp -> old_val = _tmp -> new_val;
+		_tmp -> new_val = val;
+		_tmp -> flag = true;
+		trace_flag = true;
+	}	
+	else _tmp -> flag = false;
+  }
+  return trace_flag;
+}
+
+void trace_watchpoint_diff_display(void) {
+  WP* _tmp = head;
+  while(_tmp) {
+	if (_tmp -> flag)
+		printf("Hardware watchpoint %d: %s\nOld value = %d\nNew value = %d\n"
+				, _tmp -> NO , _tmp -> stored_expr , _tmp -> old_val , _tmp -> new_val);
+	_tmp = _tmp -> next;
+  }
 }
