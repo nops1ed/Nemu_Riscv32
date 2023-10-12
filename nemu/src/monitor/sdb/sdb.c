@@ -143,6 +143,8 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_w(char *args) {
+  int *p = 0;
+  *p = 3;
   char *arg = strtok(NULL , "\0");
   if (!arg) {
     printf("Missing Arguments. \n");
