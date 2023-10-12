@@ -152,7 +152,6 @@ config ITRACE_COND
   default "true"
 
 config WATCHPOINT
-  depends on TRACE
   bool "Enable watchpoint difftest"
   default y
 
