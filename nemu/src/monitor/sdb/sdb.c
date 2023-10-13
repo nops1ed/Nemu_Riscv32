@@ -19,7 +19,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 
-#include <memory/paddr.h>
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -113,14 +113,14 @@ static int cmd_x(char *args) {
   }
   char buf[32];
   sprintf(buf , "%d" , val);
-  paddr_t addr = 0;
+  vaddr_t addr = 0;
   sscanf(buf , "%x" , &addr);
   for (int j = 0 ; j < i ; j++) {
     //printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
 		printf("0x%x: " , addr + 4 * j);
 		for (int k = 3 ; k >= 0 ; k--)
 			//Little endian
-			printf("%02x " , paddr_read(addr + 4 * j + k, 1));		
+			printf("%02x " , vaddr_read(addr + 4 * j + k, 1));		
 		printf("\n");
 	}
   return 0;
