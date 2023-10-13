@@ -18,9 +18,16 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
+static word_t Arithmetic_Shift(word_t imm, uint8_t shift, uint8_t t, uint8_t direction);
+
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
+#define As Arithmetic_Shift
+
+enum {
+  Shift_left = 0, Shift_right,
+};
 
 enum {
   TYPE_I, TYPE_U, TYPE_S, TYPE_J, TYPE_R, TYPE_B,
@@ -72,8 +79,10 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, sizeof(word_t)));
   INSTPAT("??????? ????? ????? 011 ????? 00100 11", sltiu  , I, R(rd) = src1 < imm ? 1 : 0);
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
-  INSTPAT("010000? ????? ????? 101 ????? 00100 11", srai   , I, R(rd) = src1 >> (imm & 0x11111f));
+  /* Some behavoirs maybe different when u choose riscv64*/
+  INSTPAT("010000? ????? ????? 101 ????? 00100 11", srai   , I, R(rd) = As(src1, imm & 0x11111f, BITS(src1, 5, 5), Shift_right));
   INSTPAT("??????? ????? ????? 111 ????? 00100 11", andi   , I, R(rd) = src1 & imm);
+  INSTPAT("000000? ????? ????? 101 ????? 00100 11", srli   , I, R(rd) = src1 >> (imm & 0x11111f));
   INSTPAT("??????? ????? ????? 000 ????? 01100 11", add    , R, R(rd) = src1 + src2);
   INSTPAT("0100000 ????? ????? 000 ????? 01100 11", sub    , R, R(rd) = src1 - src2);
   INSTPAT("0000001 ????? ????? 110 ????? 01100 11", rem    , R, R(rd) = src1 % src2);
@@ -96,6 +105,20 @@ static int decode_exec(Decode *s) {
 
   R(0) = 0; // reset $zero to 0
 
+  return 0;
+}
+
+static word_t Arithmetic_Shift(word_t imm, uint8_t shift, uint8_t t, uint8_t direction) {
+  for (uint8_t i = 0; i < shift; i++)  t += 1<<i;
+  switch (direction) {
+    case Shift_left:
+      return (imm << shift) | t;
+    case Shift_right:
+      /* Undefined behavoir */
+    default:
+      puts("Error shift");
+      assert(0);
+  }
   return 0;
 }
 
