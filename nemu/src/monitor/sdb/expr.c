@@ -246,10 +246,13 @@ static uint32_t eval(int p , int q) {
 		switch(tokens[p].type)
 		{
 			case TK_DEC:
-			case TK_HEX:
 				int dec_val;
 				sscanf(tokens[p].str , "%d" , &dec_val);
 				return dec_val;
+			case TK_HEX:
+				int hex_val;
+				sscanf(tokens[p].str , "%x" , &hex_val);
+				return hex_val;
 			case TK_REG:
 				bool success = true;
 				word_t reg_val = isa_reg_str2val(tokens[p].str , &success);
