@@ -111,10 +111,11 @@ static int cmd_x(char *args) {
     printf("A syntax error in expression, near '%s'.\n" , arg);
     return 0;
   }
-  char buf[32];
-  sprintf(buf , "%d" , val);
-  vaddr_t addr = 0;
-  sscanf(buf , "%x" , &addr);
+  //char buf[32];
+  //sprintf(buf , "%d" , val);
+  //vaddr_t addr = 0;
+  //sscanf(buf , "%x" , &addr);
+  vaddr_t addr = val;
   for (int j = 0 ; j < i ; j++) {
     //printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
 		printf("0x%x: " , addr + 4 * j);
