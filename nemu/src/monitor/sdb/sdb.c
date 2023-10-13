@@ -96,26 +96,21 @@ static int cmd_x(char *args) {
   char *arg = strtok(NULL , " ");
   int i = 0;
   if (!arg) {
-    printf("Scan: Too few Arguments\n");
+    printf("Arguments parse failed.\n");
     return 0;
   } 
   sscanf(arg , "%d" , &i);
   arg = strtok(NULL , "\0");
   if (!arg) {
-    printf("x: Too few Arguments\n");
+    printf("Arguments parse failed.\n");
     return 0;
   }
   bool success = true;
-  word_t val = expr(arg , &success);
+  vaddr_t addr = expr(arg , &success);
   if (!success) {
     printf("A syntax error in expression, near '%s'.\n" , arg);
     return 0;
   }
-  //char buf[32];
-  //sprintf(buf , "%d" , val);
-  //vaddr_t addr = 0;
-  //sscanf(buf , "%x" , &addr);
-  vaddr_t addr = val;
   for (int j = 0 ; j < i ; j++) {
     //printf("0x%x: %08x\n" , addr + 4 * j, vaddr_read(addr + 4 * j , 4));
 		printf("0x%x: " , addr + 4 * j);
