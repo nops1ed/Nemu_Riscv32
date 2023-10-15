@@ -121,7 +121,7 @@ void *memcpy(void *dstpp, const void *srcpp, size_t n) {
   unsigned long int srcp = (long int) srcpp;
   /* Just implement byte copy */
   /* Lots of thing to be done here... */
-  // TODO()
+  // TODO
   BYTE_COPY_FWD(dstp, srcp, n);
   return dstpp;
 }
@@ -133,7 +133,7 @@ int memcmp(const void *s1, const void *s2, size_t n) {
   long int res;
   long int a0, b0;
   /* Still lots of thing to do... */
-  // TODO()
+  // TODO
   while (n != 0) {
       a0 = ((byte *) srcp1)[0];
       b0 = ((byte *) srcp2)[0];
