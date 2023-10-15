@@ -18,13 +18,13 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
-static word_t Arithmetic_Shift(word_t imm, uint8_t shift, uint8_t t, uint8_t direction);
+//static word_t Arithmetic_Shift(word_t imm, uint8_t shift, uint8_t t, uint8_t direction);
 static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_t Cond);
 
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
-#define As Arithmetic_Shift
+//#define As Arithmetic_Shift
 #define Bc Branch_Cond
 
 enum {
@@ -87,8 +87,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 011 ????? 00100 11", sltiu  , I, R(rd) = src1 < imm ? 1 : 0);
   /* Some behavirs maybe different when choose riscv64*/
   INSTPAT("000000? ????? ????? 001 ????? 00100 11", slli   , I, R(rd) = src1 << BITS(imm, 4, 0));
-  INSTPAT("010000? ????? ????? 101 ????? 00100 11", srai   , I, R(rd) = As(src1, BITS(imm, 4, 0), BITS(src1, 5, 5), Shift_right));
-  INSTPAT("0100000 ????? ????? 101 ????? 01100 11", sra    , I, R(rd) = As(src1, BITS(src2, 4, 0), 1, Shift_right));
+  INSTPAT("010000? ????? ????? 101 ????? 00100 11", srai   , I, R(rd) = (int32_t)src1 >> BITS(imm, 4, 0) && BITS(imm, 5, 5));
   INSTPAT("??????? ????? ????? 111 ????? 00100 11", andi   , I, R(rd) = src1 & imm);
   INSTPAT("000000? ????? ????? 101 ????? 00100 11", srli   , I, R(rd) = src1 >> BITS(imm, 4, 0));
   INSTPAT("??????? ????? ????? 100 ????? 00100 11", xori   , I, R(rd) = src1 ^ imm);
@@ -101,6 +100,7 @@ static int decode_exec(Decode *s) {
   /* Behavior of BITS could be different here */
   INSTPAT("0000000 ????? ????? 001 ????? 01100 11", sll    , R, R(rd) = src1 << BITS(src2, 4, 0));
   INSTPAT("0000000 ????? ????? 101 ????? 01100 11", srl    , R, R(rd) = src1 >> BITS(src2, 4, 0));
+  INSTPAT("0100000 ????? ????? 101 ????? 01100 11", sra    , R, R(rd) = (int32_t)src1 >> BITS(src2, 4, 0));
   INSTPAT("0000000 ????? ????? 111 ????? 01100 11", and    , R, R(rd) = src1 & src2);
   INSTPAT("0000000 ????? ????? 110 ????? 01100 11", or     , R, R(rd) = src1 | src2);
   INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor    , R, R(rd) = src1 ^ src2);
@@ -129,19 +129,21 @@ static int decode_exec(Decode *s) {
   return 0;
 }
 
+/*
 static word_t Arithmetic_Shift(word_t imm, uint8_t shift, uint8_t t, uint8_t direction) {
   for (uint8_t i = 0; i < shift; i++)  t += 1<<i;
   switch (direction) {
     case Shift_right:
       return (imm >> shift) | t;
     case Shift_left:
-      /* Undefined behavoir */
     default:
       printf("Error shift\n");
       assert(0);
   }
   return 0;
 }
+*/
+
 
 static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_t Cond) {
   switch(Cond) {
