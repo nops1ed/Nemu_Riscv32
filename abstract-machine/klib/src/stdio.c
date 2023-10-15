@@ -44,7 +44,7 @@ static int _writeS(char *out, const char *buffer, size_t *n, const int len) {
 
 
 int printf(const char *fmt, ...) {
-  panic("Not implemented");
+  return 0;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
