@@ -4,6 +4,7 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
+/* What the hell ? */
 size_t strlen(const char *str) {
   const char *char_ptr;
   const unsigned long int *longword_ptr;
