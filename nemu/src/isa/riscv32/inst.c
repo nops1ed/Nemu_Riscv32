@@ -125,12 +125,12 @@ static int decode_exec(Decode *s) {
 static word_t Arithmetic_Shift(word_t imm, uint8_t shift, uint8_t t, uint8_t direction) {
   for (uint8_t i = 0; i < shift; i++)  t += 1<<i;
   switch (direction) {
-    case Shift_left:
-      return (imm << shift) | t;
     case Shift_right:
+      return (imm >> shift) | t;
+    case Shift_left:
       /* Undefined behavoir */
     default:
-      puts("Error shift");
+      printf("Error shift\n");
       assert(0);
   }
   return 0;
@@ -157,7 +157,7 @@ static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_
       if (!(src1 < src2)) return;
       break;
     default:
-      puts("Undefined Behavoir");
+      printf("Undefined Behavoir\n");
       assert(0);
   }
   s->dnpc = s->pc + imm;
