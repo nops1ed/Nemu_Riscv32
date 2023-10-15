@@ -31,6 +31,7 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
+
 void device_update();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
@@ -56,6 +57,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
+  char *tmp = p;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
   int ilen = s->snpc - s->pc;
   int i;
@@ -77,6 +79,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
+  Insert_RingBuffer(tmp);
 #endif
 }
 
@@ -126,6 +129,9 @@ void cpu_exec(uint64_t n) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
     case NEMU_END: case NEMU_ABORT:
+      #ifdef CONFIG_ITRACE
+        Display_RingBuffer();
+      #endif
       Log("nemu: %s at pc = " FMT_WORD,
           (nemu_state.state == NEMU_ABORT ? ANSI_FMT("ABORT", ANSI_FG_RED) :
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
