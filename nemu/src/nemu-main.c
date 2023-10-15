@@ -18,6 +18,7 @@
 void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
+void sdb_set_batch_mode();
 int is_exit_status_bad();
 
 int main(int argc, char *argv[]) {
@@ -27,7 +28,7 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-
+  sdb_set_batch_mode();
   /* Start engine. */
   engine_start();
 
