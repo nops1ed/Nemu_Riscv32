@@ -148,7 +148,7 @@ static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_
       if (!(src1 < src2)) return;
       break;
     default:
-      printf("Undefined Behavoir.\n");
+      printf("Undefined Behavior.\n");
       assert(0);
   }
   s->dnpc = s->pc + imm;

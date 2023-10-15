@@ -24,7 +24,7 @@ void set_nemu_state(int state, vaddr_t pc, int halt_ret);
 void invalid_inst(vaddr_t thispc);
 
 #ifdef CONFIG_ITRACE
-void Insert_RingBuffer(const char *logbuf);
+void Insert_RingBuffer(const char *logbuf, const uint32_t _size);
 void Display_RingBuffer(void);
 /* We didn`t provide the delete function
 * Cause the default behavior is just to overlap the earliest node

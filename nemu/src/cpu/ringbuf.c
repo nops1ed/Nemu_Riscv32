@@ -26,9 +26,8 @@ static void Init_RingBuffer(void) {
 }
 
 /* Always wrap next node */
-void Insert_RingBuffer(const char *logbuf) {
+void Insert_RingBuffer(const char *logbuf, const uint32_t _size) {
     if(!flag) Init_RingBuffer();
-    size_t _size = sizeof(logbuf);
     memcpy(Cur_Pos->_logbuf, logbuf, _size);
     Cur_Pos->hasval = true;
     Cur_Pos = Cur_Pos->next;
