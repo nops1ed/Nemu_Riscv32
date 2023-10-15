@@ -77,7 +77,9 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
         * which returns a value: len, it symbolizes the length we write into 
         * the buffer
         */
-        offset += _writeI(out + offset, va_arg(ap, int), &n, NUM_DEC);
+        int num = va_arg(ap, int);
+        //offset += _writeI(out + offset, va_arg(ap, int), &n, NUM_DEC);
+        offset += _writeI(out + offset, num, &n, NUM_DEC);
 			}
 			else if(*p == 's') {
         char *buf = va_arg(ap, char *);  
