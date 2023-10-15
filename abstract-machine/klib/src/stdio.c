@@ -28,7 +28,7 @@ static int _writeI(char *out, const int num, size_t *n, uint32_t type) {
       _num /= type;
     }     
   int i;
-  for(i = offset - 1; i > 0 && *n > 0; i--, *n--)  
+  for(i = offset - 1; i > 0 && *n > 0; i--, (*n)--)  
     *(out + offset - 1 - i) = buf[i];
   return i - offset - 1; 
 }
