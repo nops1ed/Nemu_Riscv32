@@ -77,29 +77,30 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
         * which returns a value: len, it symbolizes the length we write into 
         * the buffer
         */
-        offset += _writeI(out, va_arg(ap, int), &n, NUM_DEC);
+        offset += _writeI(out + offset, va_arg(ap, int), &n, NUM_DEC);
 			}
 			else if(*p == 's') {
         char *buf = va_arg(ap, char *);  
 				len = strlen(buf);
-        offset += _writeS(out, buf, &n, len);
+        offset += _writeS(out + offset, buf, &n, len);
 			}
 			else if(*p == 'c') {
         char buf[8];
         *buf = (char)va_arg(ap, int);  
-        offset += _writeS(out, buf, &n, 1);
+        offset += _writeS(out + offset, buf, &n, 1);
 		  }
 			else {
 				char *buf = "%%";
-        offset += _writeS(out, buf, &n, 2);
+        offset += _writeS(out + offset, buf, &n, 2);
 		  }
     }  
 		else {  
 			char buf[32];
 			buf[0] = *p;
-      offset += _writeS(out, buf, &n, 1);
+      offset += _writeS(out + offset, buf, &n, 1);
     }  
   }  
+  if(out + offset) *(out + offset) = '\0'; 
   va_end(ap);
   return offset;
 }
