@@ -24,7 +24,7 @@ static int _writeI(char *out, const int num, size_t *n, uint32_t type) {
   if (_num == 0) buf[offset++] = '0';
   else 
     while(_num) {
-      buf[offset++] = _num % type > 9? 'a' + _num % type - 10: _num % type;
+      buf[offset++] = (_num % type) > 9? 'a' + (_num % type) - 10: _num % type + '0';
       _num /= type;
     }     
   int i;
@@ -41,7 +41,6 @@ static int _writeS(char *out, const char *buffer, size_t *n, const int len) {
   }
   return offset;
 }
-
 
 int printf(const char *fmt, ...) {
   return 0;
