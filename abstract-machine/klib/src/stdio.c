@@ -80,6 +80,7 @@ int sprintf(char *out, const char *fmt, ...) {
       offset += len;
     }  
   }  
+  *(out + offset) = '\0';
   va_end(arg_list);  
   return offset;
 }
