@@ -38,7 +38,7 @@ void Display_RingBuffer(void) {
     }
     IRingBuffer_Node *_tmp = head;
     while(_tmp->next != tail) {
-        printf("    %s\n", _tmp->_logbuf);
+        printf("     %s\n", _tmp->_logbuf);
         _tmp = _tmp->next;
     }
     printf(" --> %s\n", _tmp->_logbuf);
