@@ -24,16 +24,13 @@ static void Init_RingBuffer(void) {
 
 /* Always wrap next node */
 void Insert_RingBuffer(const char *logbuf, const uint32_t _size) {
-    if(!flag) {
-        Init_RingBuffer();
-        printf("Init Successfully\n");
-    }
+    if(!flag) Init_RingBuffer();
     if (tail->next == head) {
         tail = head;
         head = head->next;
         memcpy(tail->_logbuf, logbuf, _size);
     }
-    else  {
+    else {
         memcpy(tail->_logbuf, logbuf, _size);
         tail = tail->next;
     }
