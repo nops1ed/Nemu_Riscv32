@@ -201,7 +201,7 @@ config DIFFTEST_REF_NAME
   default "none"
 endmenu
 
-menu "SDB Configuration"
+menu "Sdb Configuration"
 
 config BATCH_MODE 
   bool "Set batch mode for sdb"
