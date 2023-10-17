@@ -6,11 +6,6 @@ typedef struct IRingBuffer_Node {
 }IRingBuffer_Node;
 
 static IRingBuffer_Node RBN_pool[CONFIG_RSIZE] = {};
-/* Maybe not necessary */
-/*
-//static IRingBuffer_Node *head = NULL, *tail = NULL;
-//static uin32_t Cur_Pos = 0;
-*/
 /* Indicate IRINGBUFFER initialized */
 static bool flag = false;
 static IRingBuffer_Node *head = NULL, *tail = NULL;
@@ -43,7 +38,7 @@ void Display_RingBuffer(void) {
     }
     IRingBuffer_Node *_tmp = head;
     while(_tmp->next != tail) {
-        printf("%s\n", _tmp->_logbuf);
+        printf("   %s\n", _tmp->_logbuf);
         _tmp = _tmp->next;
     }
     printf("-->%s\n", _tmp->_logbuf);
