@@ -201,6 +201,13 @@ config DIFFTEST_REF_NAME
   default "none"
 endmenu
 
+menu "SDB Configuration"
+
+config BATCH_MODE 
+  bool "Set batch mode for sdb"
+  default y
+endmenu 
+
 if MODE_SYSTEM
 source "src/memory/Kconfig"
 source "src/device/Kconfig"

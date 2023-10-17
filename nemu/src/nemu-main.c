@@ -28,7 +28,9 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
+#ifdef CONFIG_BATCH_MODE
   sdb_set_batch_mode();
+#endif
   /* Start engine. */
   engine_start();
 
