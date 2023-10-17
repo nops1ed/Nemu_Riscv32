@@ -95,7 +95,6 @@ static int parse_args(int argc, char *argv[]) {
         exit(0);
     }
   }
-  printf("Fuck you bitch\n");
   return 0;
 }
 
