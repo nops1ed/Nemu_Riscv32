@@ -23,7 +23,7 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 word_t vaddr_read(vaddr_t addr, int len) {
 #ifdef CONFIG_MTRACE
   //Log("Memory Read: " FMT_PADDR "at pc: " FMT_WORD, addr, cpu.pc);
-  printf("Memory Read: 0x%x at pc: 0x%x", addr, cpu.pc);
+  printf("Memory Read: 0x%x at pc: 0x%x\n", addr, cpu.pc);
 #endif
   return paddr_read(addr, len);
 }
