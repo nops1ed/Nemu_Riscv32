@@ -17,14 +17,17 @@ static IRingBuffer_Node *head = NULL, *tail = NULL;
 
 static void Init_RingBuffer(void) {
     for (int i = 0; i < CONFIG_RSIZE; i++)
-        RBN_pool[i].next = (i == CONFIG_RSIZE- 1 ? &RBN_pool[i + 1]: &RBN_pool[0]);
+        RBN_pool[i].next = &RBN_pool[(i + 1) % CONFIG_RSIZE];
     flag = true;
     head = tail = &RBN_pool[0];
 }
 
 /* Always wrap next node */
 void Insert_RingBuffer(const char *logbuf, const uint32_t _size) {
-    if(!flag) Init_RingBuffer();
+    if(!flag) {
+        Init_RingBuffer();
+        printf("Init Successfully\n");
+    }
     if (tail->next == head) {
         tail = head;
         head = head->next;
