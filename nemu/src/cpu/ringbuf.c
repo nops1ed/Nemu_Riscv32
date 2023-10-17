@@ -3,7 +3,6 @@
 typedef struct IRingBuffer_Node {
     char _logbuf[128];
     struct IRingBuffer_Node *next;
-    bool hasval;
 }IRingBuffer_Node;
 
 static IRingBuffer_Node RBN_pool[CONFIG_RSIZE] = {};
@@ -14,33 +13,36 @@ static IRingBuffer_Node RBN_pool[CONFIG_RSIZE] = {};
 */
 /* Indicate IRINGBUFFER initialized */
 static bool flag = false;
-static IRingBuffer_Node *Cur_Pos = NULL;
+static IRingBuffer_Node *head = NULL, *tail = NULL;
 
 static void Init_RingBuffer(void) {
-    for (int i = 0; i < CONFIG_RSIZE; i++) {
+    for (int i = 0; i < CONFIG_RSIZE; i++)
         RBN_pool[i].next = (i == CONFIG_RSIZE- 1 ? &RBN_pool[i + 1]: &RBN_pool[0]);
-        RBN_pool[i].hasval = false;
-    }
     flag = true;
-    Cur_Pos = &RBN_pool[0];
+    head = tail = &RBN_pool[0];
 }
 
 /* Always wrap next node */
 void Insert_RingBuffer(const char *logbuf, const uint32_t _size) {
     if(!flag) Init_RingBuffer();
-    memcpy(Cur_Pos->_logbuf, logbuf, _size);
-    Cur_Pos->hasval = true;
-    Cur_Pos = Cur_Pos->next;
+    if (tail->next == head) {
+        tail = head;
+        head = head->next;
+        memcpy(tail->_logbuf, logbuf, _size);
+    }
+    else  {
+        memcpy(tail->_logbuf, logbuf, _size);
+        tail = tail->next;
+    }
 }
 
 void Display_RingBuffer(void) {
-    if(!(Cur_Pos->hasval)) {
+    if(head == tail) {
         printf("Run Program first\n");
         return;
     }
-    IRingBuffer_Node *_tmp = Cur_Pos->next;
-    while(!(_tmp->hasval)) _tmp = _tmp->next;
-    while(_tmp != Cur_Pos) {
+    IRingBuffer_Node *_tmp = head;
+    while(_tmp->next != tail) {
         printf("%s\n", _tmp->_logbuf);
         _tmp = _tmp->next;
     }
