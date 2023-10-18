@@ -152,7 +152,6 @@ static void Push_Trace_Frame(word_t _addr) {
   printf("Now addr equal to 0x%x\n", _addr);
     }
     if (ST[i].addr == _addr) {
-        printf("addr equal !\n");
         _tmp->func_name = ST[i].func_name;
         break;
     }
