@@ -117,13 +117,13 @@ typedef struct _Trace_Node{
 
 static _Trace_Node *top = NULL;
 static bool _Trace_Init = false;
-static uint32_t _depth = -2;
+static uint32_t _depth = 0;
 
 static void Init_Trace_Node(void) {
   top = (_Trace_Node *)malloc(sizeof(_Trace_Node));
   top->next = NULL;
   _Trace_Init = true; 
-  _depth = -2;
+  _depth = 0;
 }
 
 /* trace frame should store present addr and its indent */
@@ -151,7 +151,7 @@ static void Pop_Trace_Frame(void) {
   for(int i = 0 ; i < _depth; i++) printf(" "); 
   printf("ret [%s]\n", _tmp->func_name);
   _depth -= 2;
-  free(_tmp);
+  //free(_tmp);
 }
 
 void ftrace_call(word_t snpc, word_t dnpc) {
