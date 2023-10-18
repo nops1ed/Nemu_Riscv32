@@ -32,18 +32,56 @@ static void welcome() {
   Log("Build time: %s, %s", __TIME__, __DATE__);
   printf("Welcome to %s-NEMU!\n", ANSI_FMT(str(__GUEST_ISA__), ANSI_FG_YELLOW ANSI_BG_RED));
   printf("For help, type \"help\"\n");
-  //Log("Exercise: Please remove me in the source code and compile NEMU again.");
-  //assert(0);
 }
 
 #ifndef CONFIG_TARGET_AM
 #include <getopt.h>
+
+#define MAX_BUF_SIZE 128
+#define MAX_DEPTH 64
+
+typedef static struct _Trace_Node{
+  struct _Trace_Node *next;
+  char buf[MAX_BUF_SIZE];
+}_Trace_Node;
+
+static _Trace_Node *top = NULL;
+static bool _Trace_Init = false;
+static uint32_t _depth = -2;
+
+static void Init_Trace_Node(void) {
+  top = (_Trace_Node *)malloc(sizeof(_Trace_Node));
+  top->next = NULL;
+  _Trace_Init = true; 
+  _depth = -2;
+}
+
+/* trace frame should store present addr and its indent */
+static void Push_Trace_Frame(word_t addr) {
+  if(!_Trace_Init) Init_Trace_Node();
+  _Trace_Node *_tmp = (_Trace_Node *)malloc(sizeof(_Trace_Node));
+  memcpy(_tmp->buf, addr, sizeof(addr));
+  _tmp->next = top;
+  top = _tmp;
+  _depth += 2;
+}
+
+/* Pop the top node and print its info */
+static void Pop_Trace_Frame(void) {
+  _Trace_Node *_tmp = top;
+  top = top->next;
+  for(int i = 0 ; i < _tmp->indent; i++) printf(" "); 
+  printf("%s\n", _tmp->buf);
+  _depth -= 2;
+  free(_tmp);
+}
 
 void sdb_set_batch_mode();
 
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
+static char *elf_file = NULL;
 static int difftest_port = 1234;
 
 static long load_img() {
@@ -75,15 +113,17 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
+    {"elf"      , required_argument, NULL, 'e'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhle:d:p:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
+      case 'e': elf_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -91,6 +131,7 @@ static int parse_args(int argc, char *argv[]) {
         printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+        printf("\t-e,--elf=FILE           read given elf file\n");
         printf("\n");
         exit(0);
     }
