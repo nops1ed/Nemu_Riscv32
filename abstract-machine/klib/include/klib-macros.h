@@ -8,7 +8,7 @@
 #define IN_RANGE(ptr, area) ((area).start <= (ptr) && (ptr) < (area).end)
 
 /* Some macros used in memmory operation */
-#define byte unsigned char
+#define __BYTE unsigned char
 
 #define STRINGIFY(s)        #s
 #define TOSTRING(s)         STRINGIFY(s)
@@ -19,10 +19,10 @@
   ({do {  \
     size_t __nbytes = (nbytes); \
     while (__nbytes > 0) {  \
-	    byte __x = ((byte *) src_bp)[0];  \
+	    __BYTE __x = ((__BYTE *) src_bp)[0];  \
 	    src_bp += 1;  \
 	    __nbytes -= 1;  \
-	    ((byte *) dst_bp)[0] = __x; \
+	    ((__BYTE *) dst_bp)[0] = __x; \
 	    dst_bp += 1;  \
 	  } \
   } while (0);})

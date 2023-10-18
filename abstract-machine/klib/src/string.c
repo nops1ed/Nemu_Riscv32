@@ -105,7 +105,7 @@ void *memset(void *s, int c, size_t n) {
   // TODO()
   long int dstp = (long int)s;
   while (n > 0) {
-      ((byte *) dstp)[0] = c;
+      ((__BYTE *) dstp)[0] = c;
       dstp += 1;
       n -= 1;
   }
@@ -135,8 +135,8 @@ int memcmp(const void *s1, const void *s2, size_t n) {
   /* Still lots of thing to do... */
   // TODO
   while (n != 0) {
-      a0 = ((byte *) srcp1)[0];
-      b0 = ((byte *) srcp2)[0];
+      a0 = ((__BYTE *) srcp1)[0];
+      b0 = ((__BYTE *) srcp2)[0];
       srcp1 += 1;
       srcp2 += 1;
       res = a0 - b0;
