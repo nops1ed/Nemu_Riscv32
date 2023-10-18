@@ -100,7 +100,7 @@ void INIT_SYMBOL_TABLE(const char *elf_filename) {
                 *     Extract a type from an st_info value.
                 */
                 if (ELF32_ST_TYPE(_sym.st_info) == STT_FUNC) { 
-                    long cur_pos = ftell(fp);
+                    uint32_t cur_pos = ftell(fp);
                     // read function name
                     // This should be enough
                     char *func_name = (char *)malloc(sizeof(char) * 32);
