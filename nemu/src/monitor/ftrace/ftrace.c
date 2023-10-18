@@ -122,7 +122,7 @@ void INIT_SYMBOL_TABLE(const char *elf_filename) {
 typedef struct _Trace_Node{
   struct _Trace_Node *next;
   char *func_name;
-  uint32_t  addr;
+  word_t addr;
 }_Trace_Node;
 
 static _Trace_Node *top = NULL;
@@ -146,6 +146,7 @@ static void Push_Trace_Frame(word_t _addr) {
   _depth += 2;
   for(int i = 0; i < ST_SIZE; i++) {
     if (ST[i].addr == _addr) {
+        printf("addr equal !\n");
         _tmp->func_name = ST[i].func_name;
         break;
     }
