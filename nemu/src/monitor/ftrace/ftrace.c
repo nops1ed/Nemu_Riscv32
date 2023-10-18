@@ -47,7 +47,7 @@ static uint32_t ST_SIZE = 0;
 */
 void INIT_SYMBOL_TABLE(const char *elf_filename) {
     FILE *fp;
-    assert((fp = fopen(elf_filename, "r")));
+    assert((fp = fopen(elf_filename, "rb")) != NULL);
     Elf32_Ehdr _ehdr;
     assert(fread(&_ehdr, sizeof(_ehdr), 1, fp));
         /*
