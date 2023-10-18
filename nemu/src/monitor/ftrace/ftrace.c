@@ -136,6 +136,7 @@ static void Init_Trace_Node(void) {
   _depth = 0;
 }
 
+#define FFFFFF 0
 /* trace frame should store present addr and its indent */
 static void Push_Trace_Frame(word_t _addr) {
   if(!_Trace_Init) Init_Trace_Node();
@@ -145,8 +146,10 @@ static void Push_Trace_Frame(word_t _addr) {
   _tmp->func_name = '\0';
   _depth += 2;
  for(int i = 0; i < ST_SIZE; i++) {
+#ifdef FFFFFF
   printf("Now ST[%d].addr equal to 0x%x\n", i, ST[i].addr);
   printf("Now addr equal to 0x%x\n", _addr);
+  #endif
     if (ST[i].addr == _addr) {
         printf("addr equal !\n");
         _tmp->func_name = ST[i].func_name;
