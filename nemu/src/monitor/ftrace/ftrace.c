@@ -132,6 +132,7 @@ static void Push_Trace_Frame(word_t _addr) {
   _Trace_Node *_tmp = (_Trace_Node *)malloc(sizeof(_Trace_Node));
   _tmp->addr = _addr;
   _tmp->next = top;
+  _tmp->func_name = '\0';
   _depth += 2;
   for(int i = 0; i < ST_SIZE; i++) {
     if (ST[i].addr == _addr) {
