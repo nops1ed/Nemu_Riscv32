@@ -160,6 +160,11 @@ config WATCHPOINT
   bool "Enable watchpoint difftest"
   default y
 
+config FTRACE
+  depends on TRACE
+  bool "Enable function trace"
+  default y
+
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
   bool "Enable differential testing"
