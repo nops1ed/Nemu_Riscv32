@@ -106,7 +106,7 @@ static void statistic() {
 
 void assert_fail_msg() {
   #ifdef CONFIG_ITRACE
-    //Display_RingBuffer();
+    Display_RingBuffer();
   #endif
   isa_reg_display();
   statistic();
