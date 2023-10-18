@@ -18,7 +18,7 @@
 
 typedef struct symbol_table{
     char *func_name;
-    word_t addr, size;    // start addr and size
+    uint32_t addr, size;    // start addr and size
 }symbol_table;
 
 /* define symbol table */
@@ -152,7 +152,7 @@ static void Pop_Trace_Frame(void) {
   for(int i = 0 ; i < _depth; i++) printf(" "); 
   printf("ret [%s]\n", _tmp->func_name);
   _depth -= 2;
-  //free(_tmp);
+  free(_tmp);
 }
 
 void ftrace_call(word_t snpc, word_t dnpc) {
