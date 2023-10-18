@@ -23,6 +23,7 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
+void INIT_SYMBOL_TABLE(const char *elf_filename);
 
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
@@ -37,51 +38,12 @@ static void welcome() {
 #ifndef CONFIG_TARGET_AM
 #include <getopt.h>
 
-#define MAX_BUF_SIZE 128
-#define MAX_DEPTH 64
-
-typedef static struct _Trace_Node{
-  struct _Trace_Node *next;
-  char buf[MAX_BUF_SIZE];
-}_Trace_Node;
-
-static _Trace_Node *top = NULL;
-static bool _Trace_Init = false;
-static uint32_t _depth = -2;
-
-static void Init_Trace_Node(void) {
-  top = (_Trace_Node *)malloc(sizeof(_Trace_Node));
-  top->next = NULL;
-  _Trace_Init = true; 
-  _depth = -2;
-}
-
-/* trace frame should store present addr and its indent */
-static void Push_Trace_Frame(word_t addr) {
-  if(!_Trace_Init) Init_Trace_Node();
-  _Trace_Node *_tmp = (_Trace_Node *)malloc(sizeof(_Trace_Node));
-  memcpy(_tmp->buf, addr, sizeof(addr));
-  _tmp->next = top;
-  top = _tmp;
-  _depth += 2;
-}
-
-/* Pop the top node and print its info */
-static void Pop_Trace_Frame(void) {
-  _Trace_Node *_tmp = top;
-  top = top->next;
-  for(int i = 0 ; i < _tmp->indent; i++) printf(" "); 
-  printf("%s\n", _tmp->buf);
-  _depth -= 2;
-  free(_tmp);
-}
 
 void sdb_set_batch_mode();
 
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
-static char *elf_file = NULL;
 static int difftest_port = 1234;
 
 static long load_img() {
@@ -123,7 +85,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 'e': elf_file = optarg; break;
+      case 'e': INIT_SYMBOL_TABLE(optarg); break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
