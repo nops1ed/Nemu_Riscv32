@@ -107,7 +107,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Parse arguments. */
   parse_args(argc, argv);
-  INIT_SYMBOL_TABLE(elf_file);
+  //INIT_SYMBOL_TABLE(elf_file);
 
   /* Set random seed. */
   init_rand();
