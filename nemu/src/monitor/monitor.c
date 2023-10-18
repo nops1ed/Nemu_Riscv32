@@ -107,7 +107,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Parse arguments. */
   parse_args(argc, argv);
-
+  INIT_SYMBOL_TABLE(elf_file);
 
   /* Set random seed. */
   init_rand();
@@ -132,8 +132,6 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize the simple debugger. */
   init_sdb();
-
-  INIT_SYMBOL_TABLE(elf_file);
 
 #ifndef CONFIG_ISA_loongarch32r
   IFDEF(CONFIG_ITRACE, init_disasm(
