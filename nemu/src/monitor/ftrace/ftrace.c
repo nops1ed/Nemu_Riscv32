@@ -83,6 +83,7 @@ void INIT_SYMBOL_TABLE(const char *elf_filename) {
         /* Locate String table */
         if(_shdr.sh_type == SHT_STRTAB) {
             _strtab_offset = _shdr.sh_offset;
+            break;
         }
     } 
 
@@ -99,7 +100,7 @@ void INIT_SYMBOL_TABLE(const char *elf_filename) {
                 *     Extract a type from an st_info value.
                 */
                 if (ELF32_ST_TYPE(_sym.st_info) == STT_FUNC) { 
-                    uint32_t cur_pos = ftell(fp);
+                    long cur_pos = ftell(fp);
                     // read function name
                     // This should be enough
                     char *func_name = (char *)malloc(sizeof(char) * 32);
