@@ -144,7 +144,9 @@ static void Push_Trace_Frame(word_t _addr) {
   _tmp->next = top;
   _tmp->func_name = '\0';
   _depth += 2;
-  for(int i = 0; i < ST_SIZE; i++) {
+ for(int i = 0; i < ST_SIZE; i++) {
+  printf("Now ST[i].addr equal to 0x%x\n", ST[i].addr);
+  printf("Now addr equal to 0x%x\n", _addr);
     if (ST[i].addr == _addr) {
         printf("addr equal !\n");
         _tmp->func_name = ST[i].func_name;
