@@ -106,13 +106,14 @@ void INIT_SYMBOL_TABLE(const char *elf_filename) {
             }
         }
     }
+    printf("SYMTAB initialized\n");
 }
 
 /* Establish mini Trapframe to record jmp action */
 typedef struct _Trace_Node{
   struct _Trace_Node *next;
   char *func_name;
-  word_t addr;
+  uint32_t  addr;
 }_Trace_Node;
 
 static _Trace_Node *top = NULL;
