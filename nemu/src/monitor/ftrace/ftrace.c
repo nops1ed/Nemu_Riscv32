@@ -83,7 +83,7 @@ void INIT_SYMBOL_TABLE(const char *elf_filename) {
         /* Locate String table */
         if(_shdr.sh_type == SHT_STRTAB) {
             _strtab_offset = _shdr.sh_offset;
-            break;
+            //break;
         }
     } 
 
