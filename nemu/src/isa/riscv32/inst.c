@@ -20,7 +20,7 @@
 #include "../../monitor/ftrace/ftrace.h"
 
 static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_t Cond);
-//static void _jalr_ret(Decode *s, word_t imm);
+static void ftrace(Decode *s, word_t snpc, word_t dnpc);
 
 #define R(i) gpr(i)
 #define Mr vaddr_read
@@ -75,8 +75,8 @@ static int decode_exec(Decode *s) {
 }
 
   INSTPAT_START();
-  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc , s->dnpc = imm + s->pc, ftrace_call(s->snpc, s->dnpc) );
-  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc , s->dnpc = (src1 + imm)& ~1, ftrace_call(s->snpc, s->dnpc) );
+  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc , s->dnpc = imm + s->pc, ftrace(s, s->snpc, s->dnpc));
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc , s->dnpc = (src1 + imm)& ~1,ftrace(s, s->snpc, s->dnpc));
   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi   , I, R(rd) = src1 + imm);
   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, sizeof(word_t)));
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
@@ -130,15 +130,18 @@ static int decode_exec(Decode *s) {
   return 0;
 }
 
-/*
-static void _jalr_ret(Decode *s, word_t imm) {
-  int a = BITS(s, 19, 15);
-  int b = BITS(s, 11, 7);
-  if (imm == 0 && a == 8 && b == 0)
-    ftrace_ret(s->snpc);
-  else ftrace_call(s->snpc, s->dnpc);
+static void ftrace(Decode *s, word_t snpc, word_t dnpc) {
+  word_t i = s->isa.inst.val;
+  int rs1 = BITS(i, 19, 15);
+  int rd = BITS(i, 11, 7);
+  if (rd == 1) {
+    ftrace_call(snpc, dnpc);
+  }
+  else if(rd == 0 && rs1 == 1) {
+    ftrace_ret(snpc);
+  }
+  return;
 }
-*/
 
 static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_t Cond) {
   switch(Cond) {
