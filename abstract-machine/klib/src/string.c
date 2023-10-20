@@ -4,7 +4,6 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-/* What the hell ? */
 size_t strlen(const char *str) {
   const char *char_ptr;
   const unsigned long int *longword_ptr;
@@ -98,8 +97,12 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-  // TODO()
   long int dstp = (long int)s;
+  /* Here we still need page copy instead of byte copy
+  * otherwise it performed too bad 
+  */
+  //PAGE_COPY_FWD();
+
   while (n > 0) {
       ((__BYTE *) dstp)[0] = c;
       dstp += 1;
@@ -112,13 +115,20 @@ void *memmove(void *dst, const void *src, size_t n) {
   panic("Not implemented");
 }
 
+/* Not Thread-safe */
 void *memcpy(void *dstpp, const void *srcpp, size_t n) {
   unsigned long int dstp = (long int) dstpp;
   unsigned long int srcp = (long int) srcpp;
-  /* Just implement byte copy */
-  /* Lots of thing to be done here... */
-  // TODO
+  /* Lots of thing to be done here...
+  * Here we need page copy and enable byte align 
+  */
+
+
+  /* Trivial Implement.
+  * Just implement byte copy 
+  */
   BYTE_COPY_FWD(dstp, srcp, n);
+  /* Byte copy may not need align. */
   return dstpp;
 }
 
