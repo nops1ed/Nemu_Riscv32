@@ -22,6 +22,10 @@ static void _writeC(char *out, const char c) {
 }
 
 /* Write an interger into buffer according to type we wanna convert */
+
+/* Well, this may be a bad behavior 
+ * But putch is a default function so we have to treat it differently
+ */
 static int _writeI(char *out, const uint32_t _offset_, const int num, size_t *n, uint32_t type) {
   long int _num = num;
   /* This should be enough, or we consider it as overflow and cut it down */
