@@ -15,6 +15,12 @@ enum {
 * to certain buffer 
 */
 
+/* Write a single char to stream out */
+static void _writeC(char *out, const char c) {
+  if(out) *out = c;
+  else putch(c);
+}
+
 /* Write an interger into buffer according to type we wanna convert */
 static int _writeI(char *out, const int num, size_t *n, uint32_t type) {
   long int _num = num;
@@ -28,8 +34,9 @@ static int _writeI(char *out, const int num, size_t *n, uint32_t type) {
       _num /= type;
     }     
   int i;
-  for(i = offset - 1; i >= 0 && *n > 0; i--, (*n)--)  
-    *(out + offset - 1 - i) = buf[i];
+  for(i = 0; i < offset && *n > 0; i--, (*n)--)  
+    _writeC(out + i, *(buf + offset - 1 - i)); 
+    //*(out + offset - 1 - i) = buf[i];
   return offset - 1 - i; 
 }
 
@@ -37,13 +44,17 @@ static int _writeI(char *out, const int num, size_t *n, uint32_t type) {
 static int _writeS(char *out, const char *buffer, size_t *n, const int len) {
   uint32_t offset;
   for (offset = 0; offset < len && *n > 0; offset++, (*n)--) {
-    *(out + offset) = *(buffer + offset);
+    _writeC(out, *(buffer + offset));
   }
   return offset;
 }
 
 int printf(const char *fmt, ...) {
-
+  va_list ap;
+  va_start(ap , fmt);
+  int ret = vsprintf(NULL, fmt, ap);
+  va_end(ap);
+  return ret;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
@@ -57,7 +68,6 @@ int sprintf(char *out, const char *fmt, ...) {
   va_list ap;  
   va_start(ap, fmt);
   int ret = vsprintf(out, fmt, ap);
-
   va_end(ap);
   return ret;
 }
@@ -101,7 +111,8 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
       offset += _writeS(out + offset, buf, &n, 1);
     }  
   }  
-  if(out + offset) *(out + offset) = '\0'; 
+  if(out + offset) _writeC(out + offset, '\0'); 
+  //*(out + offset) = '\0'; 
   va_end(ap);
   return offset;
 }
