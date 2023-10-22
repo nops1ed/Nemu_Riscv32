@@ -22,7 +22,7 @@ static void _writeC(char *out, const char c) {
 }
 
 /* Write an interger into buffer according to type we wanna convert */
-static int _writeI(char *out, const int num, size_t *n, uint32_t type) {
+static int _writeI(char *out, const uint32_t _offset_, const int num, size_t *n, uint32_t type) {
   long int _num = num;
   /* This should be enough, or we consider it as overflow and cut it down */
   char buf[MAX_IBUF];
@@ -35,16 +35,18 @@ static int _writeI(char *out, const int num, size_t *n, uint32_t type) {
     }     
   int i;
   for(i = 0; i < offset && *n > 0; i--, (*n)--)  
-    _writeC(out + i, *(buf + offset - 1 - i)); 
+    if (out)  _writeC(out + _offset_ + i, *(buf + offset - 1 - i)); 
+    else _writeC(out, *(buf + offset - 1 - i));
     //*(out + offset - 1 - i) = buf[i];
   return offset - 1 - i; 
 }
 
 /* Write a string to buffer */
-static int _writeS(char *out, const char *buffer, size_t *n, const int len) {
+static int _writeS(char *out, const uint32_t _offset_, const char *buffer, size_t *n, const int len) {
   uint32_t offset;
   for (offset = 0; offset < len && *n > 0; offset++, (*n)--) {
-    _writeC(out, *(buffer + offset));
+    if(out) _writeC(out + _offset_ + offset, *(buffer + offset));
+    else _writeC(out, *(buffer + offset));
   }
   return offset;
 }
@@ -88,30 +90,30 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
         */
         int num = va_arg(ap, int);
         //offset += _writeI(out + offset, va_arg(ap, int), &n, NUM_DEC);
-        offset += _writeI(out + offset, num, &n, NUM_DEC);
+        offset += _writeI(out, offset, num, &n, NUM_DEC);
 			}
 			else if(*p == 's') {
         char *buf = va_arg(ap, char *);  
 				len = strlen(buf);
-        offset += _writeS(out + offset, buf, &n, len);
+        offset += _writeS(out, offset, buf, &n, len);
 			}
 			else if(*p == 'c') {
         char buf[8];
         *buf = (char)va_arg(ap, int);  
-        offset += _writeS(out + offset, buf, &n, 1);
+        offset += _writeS(out, offset, buf, &n, 1);
 		  }
 			else {
 				char *buf = "%%";
-        offset += _writeS(out + offset, buf, &n, 2);
+        offset += _writeS(out, offset, buf, &n, 2);
 		  }
     }  
 		else {  
 			char buf[32];
 			buf[0] = *p;
-      offset += _writeS(out + offset, buf, &n, 1);
+      offset += _writeS(out, offset, buf, &n, 1);
     }  
   }  
-  if(out + offset) _writeC(out + offset, '\0'); 
+  if(out && out + offset) _writeC(out + offset, '\0'); 
   //*(out + offset) = '\0'; 
   va_end(ap);
   return offset;
