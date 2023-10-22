@@ -12,10 +12,10 @@ enum {
 };
 
 /* Functions below implement writing integer or string 
-* to certain buffer 
+* to certain buffer or call putch()
 */
 
-/* Write a single char to stream out */
+/* Write a single char to file stream or call putch() */
 static void _writeC(char *out, const char c) {
   if(out) *out = c;
   else putch(c);
@@ -23,8 +23,8 @@ static void _writeC(char *out, const char c) {
 
 /* Write an interger into buffer according to type we wanna convert */
 
-/* Well, this may be a bad behavior 
- * But putch is a default function so we have to treat it differently
+/* Well, this is not a good practice 
+ * But putch is a default function so we have to treat it differently instead of a file stream
  */
 static int _writeI(char *out, const uint32_t _offset_, const int num, size_t *n, uint32_t type) {
   long int _num = num;
@@ -79,7 +79,11 @@ int sprintf(char *out, const char *fmt, ...) {
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  return 0;
+  va_list ap;  
+  va_start(ap, fmt);
+  int ret = vsnprintf(out, n, fmt, ap);
+  va_end(ap);
+  return ret;
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
