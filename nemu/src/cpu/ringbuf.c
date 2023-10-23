@@ -1,5 +1,6 @@
 #include <cpu/cpu.h>
 
+#ifdef CONFIG_ITRACE
 typedef struct IRingBuffer_Node {
     char _logbuf[128];
     struct IRingBuffer_Node *next;
@@ -43,3 +44,4 @@ void Display_RingBuffer(void) {
     }
     printf(" --> %s\n", _tmp->_logbuf);
 } 
+#endif

@@ -142,7 +142,7 @@ int sdb_watchpoint_create(char *s) {
   }
 
   /* Initialize the node */
-  strncpy(_tmp -> stored_expr , s , strlen(s));
+  memcpy(_tmp -> stored_expr , s , strlen(s));
   _tmp -> old_val = _tmp -> new_val = val;
   return _tmp -> NO;
 }

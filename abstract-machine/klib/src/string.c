@@ -70,8 +70,9 @@ char *strcpy(char *dst, const char *src) {
   return memcpy (dst, src, strlen(src) + 1);
 }
 
+/* Any UB should not be protected here. */
 char *strncpy(char *dst, const char *src, size_t n) {
-  panic("Not implemented");
+  return memcpy (dst, src, n);
 }
 
 char *strcat(char *dst, const char *src) {
