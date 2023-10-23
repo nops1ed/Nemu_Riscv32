@@ -79,7 +79,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *out, const char *fmt, ...) {
   va_list ap;  
   va_start(ap, fmt);
-  int ret = snprintf(out, -1, fmt, ap);
+  int ret = vsnprintf(out, -1, fmt, ap);
   va_end(ap);
   return ret;
 }
