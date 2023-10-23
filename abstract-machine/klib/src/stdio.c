@@ -54,11 +54,9 @@ static int _writeI(char *out, uint32_t _offset_, int num, size_t *n, uint32_t wi
 static int _writeS(char *out, uint32_t _offset_, const char *buffer, size_t *n, int len) {
   uint32_t offset;
   for (offset = 0; offset < len && *n > 0; offset++, (*n)--) {
-    /*
     if(out) _writeC(out + _offset_ + offset, *(buffer + offset));
     else _writeC(out, *(buffer + offset));
-    */
-    *(out + _offset_ + offset) = *(buffer + offset);
+    //*(out + _offset_ + offset) = *(buffer + offset);
   }
   return offset;
 }
