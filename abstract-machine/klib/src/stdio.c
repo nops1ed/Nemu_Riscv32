@@ -58,7 +58,7 @@ static int _writeS(char *out, uint32_t _offset_, const char *buffer, size_t *n, 
     if(out) _writeC(out + _offset_ + offset, *(buffer + offset));
     else _writeC(out, *(buffer + offset));
     */
-    *(out + _offset_ + offset) = *(buffer + offset);
+    *(out + offset) = *(buffer + offset);
   }
   return offset;
 }
@@ -116,7 +116,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
 			else if(*p == 's') {
         char *buf = va_arg(ap, char *);  
 				len = strlen(buf);
-        offset += _writeS(out, offset, buf, &n, len);
+        offset += _writeS(out + offset, offset, buf, &n, len);
 			}
 			else if(*p == 'c') {
         char buf[8];
