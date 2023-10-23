@@ -44,11 +44,8 @@ static int _writeI(char *out, uint32_t _offset_, int num, size_t *n, uint32_t wi
   }
   int i;
   for(i = 0; i < offset && *n > 0; i++, (*n)--)  
-  /*
     if (out)  _writeC(out + _offset_ + i, *(buf + offset - 1 - i)); 
     else _writeC(out, *(buf + offset - 1 - i));
-    */
-    _writeC(out + _offset_ + i, *(buf + offset - 1 - i));
     //*(out + offset - 1 - i) = buf[i];
   return i; 
 }
