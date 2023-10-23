@@ -97,11 +97,10 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
     if (*p == '%') {  
       width = 0;
       p++;  
-     /* for ( ; *p != '\0' && *p >= '0' && *p <= '9'; ++p) {
+      for ( ; *p != '\0' && *p >= '0' && *p <= '9'; ++p) {
         width *= 10;
         width += *p - '0';
       }
-      */
 			if (*p == 'd') {
         /* Some functions should be implemented here 
         * which returns a value: len, it symbolizes the length we write into 
