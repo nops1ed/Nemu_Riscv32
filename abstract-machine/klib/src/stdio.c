@@ -132,7 +132,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
     }  
   }  
   if(out && out + offset) _writeC(out + offset, '\0'); 
-  else _writeC(out, '\0');
+  //else _writeC(out, '\0');
   //*(out + offset) = '\0'; 
   va_end(ap);
   return offset;
