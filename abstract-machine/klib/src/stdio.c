@@ -38,16 +38,17 @@ static int _writeI(char *out, uint32_t _offset_, int num, size_t *n, uint32_t wi
       buf[offset++] = (_num % type) > 9? 'a' + (_num % type) - 10: _num % type + '0';
       _num /= type;
     }     
-    /*
   for(int j = offset; j < width; j++) {
     if (out)  _writeC(out + _offset_ + j, '0'); 
     else _writeC(out, '0');
   }
-  */
   int i;
   for(i = 0; i < offset && *n > 0; i++, (*n)--)  
+  /*
     if (out)  _writeC(out + _offset_ + i, *(buf + offset - 1 - i)); 
     else _writeC(out, *(buf + offset - 1 - i));
+    */
+    _writeC(out + _offset_ + i, *(buf + offset - 1 - i));
     //*(out + offset - 1 - i) = buf[i];
   return i; 
 }
