@@ -47,7 +47,7 @@ static int _writeI(char *out, uint32_t _offset_, int num, size_t *n, uint32_t wi
     if (out)  _writeC(out + _offset_ + i, *(buf + offset - 1 - i)); 
     else _writeC(out, *(buf + offset - 1 - i));
     //*(out + offset - 1 - i) = buf[i];
-  return offset - 1 - i; 
+  return i; 
 }
 
 /* Write a string to buffer */
