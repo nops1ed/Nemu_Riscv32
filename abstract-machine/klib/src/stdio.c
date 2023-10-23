@@ -129,14 +129,14 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
 		  }
     }  
 		else {  
-			char buf[32];
+			char buf[8];
 			buf[0] = *p;
       offset += _writeS(out, offset, buf, &n, 1);
     }  
   }  
-  //if(out && out + offset) _writeC(out + offset, '\0'); 
-  //else _writeC(out, '\0');
-  *(out + offset) = '\0'; 
+  if(out && out + offset) _writeC(out + offset, '\0'); 
+  else _writeC(out, '\0');
+  //*(out + offset) = '\0'; 
   va_end(ap);
   return offset;
 }
