@@ -27,11 +27,30 @@ enum {
   nr_reg
 };
 
+typedef struct AudioData {
+  uint8_t *idx;
+  uint32_t len;
+}AudioData;
+
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 }
+
+void callback_func(void *data, void *buf, uint32_t buf_len) {
+  SDL_memset(buf, 0, buf_len);
+  AudioData *audio = (AudioData *)data;
+
+  uint32_t length = buf_len;
+  length = (length > audio->len ? audio->len : length);
+
+  SDL_memcpy(buf, audio->idx, length);
+
+  audio->idx += length;
+  audio->len -= length;
+}
+
 
 void init_audio() {
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
@@ -44,4 +63,19 @@ void init_audio() {
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
+
+
+  AudioData audio;
+  audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
+  audio.len = CONFIG_SB_SIZE;
+  SDL_AudioSpec s = {};
+  s.format = AUDIO_S16SYS;  // 假设系统中音频数据的格式总是使用16位有符号数来表示
+  s.userdata = &audio;        
+  s.freq = 48000;
+  s.channels = 2;
+  s.samples = 4096;
+  s.callback = (SDL_AudioCallback)callback_func;
+  SDL_InitSubSystem(SDL_INIT_AUDIO);
+  SDL_OpenAudio(&s, NULL);
+  SDL_PauseAudio(0);
 }
