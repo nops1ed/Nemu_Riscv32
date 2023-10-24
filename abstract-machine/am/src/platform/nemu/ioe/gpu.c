@@ -10,6 +10,9 @@
 static uint32_t _width, _height;
 
 void __am_gpu_init() {
+  uint32_t vga_info = inl(VGACTL_ADDR);
+  _width = (vga_info >> 16) & 0xFFFF;
+  _height = vga_info & 0xFFFF;
   /*
   uint32_t vga_info = inl(VGACTL_ADDR);
   int w = (vga_info >> 16) & 0xFFFF;
@@ -23,9 +26,7 @@ void __am_gpu_init() {
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
-  uint32_t vga_info = inl(VGACTL_ADDR);
-  _width = (vga_info >> 16) & 0xFFFF;
-  _height = vga_info & 0xFFFF;
+
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
     .width = _width, .height = _height,
@@ -45,7 +46,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   uint32_t *pi = ctl->pixels;
   for (int i = 0; i < h; i ++) {
     for (int j = 0; j < w; j ++) {
-      fb[(y + i) * W + x + j] = pi[i * w + j];
+      fb[(y + i) * _width + x + j] = pi[i * w + j];
     }
   }
   outl(SYNC_ADDR, 1);
