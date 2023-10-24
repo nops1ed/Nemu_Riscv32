@@ -39,6 +39,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   printf("Noting ot do\n");
 }
 
+/*
 void callback_func(void *data, void *buf, uint32_t buf_len) {
   SDL_memset(buf, 0, buf_len);
   AudioData *audio = (AudioData *)data;
@@ -51,6 +52,7 @@ void callback_func(void *data, void *buf, uint32_t buf_len) {
   audio->idx += length;
   audio->len -= length;
 }
+*/
 
 
 void init_audio() {
@@ -66,6 +68,7 @@ void init_audio() {
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
 
+/*
   printf("I am ready to alloc space\n");
   AudioData audio;
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
@@ -80,4 +83,5 @@ void init_audio() {
   SDL_InitSubSystem(SDL_INIT_AUDIO);
   SDL_OpenAudio(&s, NULL);
   SDL_PauseAudio(0);
+  */
 }
