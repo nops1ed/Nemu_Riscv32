@@ -57,9 +57,8 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   if (w == 0 || h == 0) return;
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   uint32_t *pi = ctl->pixels;
-  int i, j;              
-  for (i = 0; i < h; i ++) {
-    for (j = 0; j < w; j ++) {
+  for (int i = 0; i < h; i ++) {
+    for (int j = 0; j < w; j ++) {
       fb[(y + i) * W + x + j] = pi[i * w + j];
     }
   }
