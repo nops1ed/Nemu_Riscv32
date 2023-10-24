@@ -66,6 +66,7 @@ void init_audio() {
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
 
+  printf("I am ready to alloc space\n");
   AudioData audio;
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
   audio.len = CONFIG_SB_SIZE;
