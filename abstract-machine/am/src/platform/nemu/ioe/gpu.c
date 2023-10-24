@@ -39,7 +39,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     outl(SYNC_ADDR, 1);
   }
 */
-  if(ctl->sync) {
+  if(1) {
     uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
     uint32_t *_pixels = ctl->pixels;
 
