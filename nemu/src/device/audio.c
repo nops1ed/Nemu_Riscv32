@@ -66,10 +66,8 @@ void init_audio() {
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
 
-  printf("I am ready to alloc space\n");
   AudioData audio;
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
-  printf("alloc success\n");
   audio.len = CONFIG_SB_SIZE;
   SDL_AudioSpec s = {};
   s.format = AUDIO_S16SYS;  // 假设系统中音频数据的格式总是使用16位有符号数来表示
@@ -78,7 +76,6 @@ void init_audio() {
   s.channels = 2;
   s.samples = 4096;
   s.callback = (SDL_AudioCallback)callback_func;
-  printf("s initializes successfully\n");
   SDL_InitSubSystem(SDL_INIT_AUDIO);
   SDL_OpenAudio(&s, NULL);
   SDL_PauseAudio(0);
