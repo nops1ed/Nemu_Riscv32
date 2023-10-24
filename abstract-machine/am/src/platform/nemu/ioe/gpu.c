@@ -3,6 +3,9 @@
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
+#define W 400
+#define H 300
+
 static uint32_t _width, _height;
 
 void __am_gpu_init() {
@@ -41,7 +44,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 
     for (int i = 0; i < ctl->h; i ++) {
       for (int j = 0; j < ctl->w; j ++) {
-        fb[(ctl->y + i) * _width + ctl->x + j] = _pixels[i * ctl->w + j];
+        fb[(ctl->y + i) * W + ctl->x + j] = _pixels[i * ctl->w + j];
       }
     }
     outl(SYNC_ADDR, 1);
