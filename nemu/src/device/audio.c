@@ -36,6 +36,7 @@ static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+  printf("Noting ot do\n");
 }
 
 void callback_func(void *data, void *buf, uint32_t buf_len) {
