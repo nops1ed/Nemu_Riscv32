@@ -4,9 +4,12 @@
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
 void __am_gpu_init() {
+  //vgactl_port_base[0] = (screen_width() << 16) | screen_height();
+  
   int i;
-  int w = io_read(AM_GPU_CONFIG).width;
-  int h = io_read(AM_GPU_CONFIG).height; 
+  uint32_t vga_info = inl(VGACTL_ADDR);
+  int w = vga_info & 0xffff0000;
+  int h = vga_info & 0x0000ffff; 
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   for (i = 0; i < w * h; i ++) fb[i] = i;
   //outl(SYNC_ADDR, 1);
