@@ -45,6 +45,7 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
   /*
   stat->count = inl(AUDIO_COUNT_ADDR);
   */
+  stat->count = 0;
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
