@@ -7,18 +7,18 @@ void __am_gpu_init() {
   //vgactl_port_base[0] = (screen_width() << 16) | screen_height();
   
   int i;
-  uint32_t vga_info = inl(VGACTL_ADDR);
-  int w = (vga_info >> 16) & 0xffff;
-  int h = vga_info & 0xffff; 
+  uint32_t info = inl(VGACTL_ADDR);
+  uint16_t h = (uint16_t)(info & 0xFFFF);
+  uint16_t w = (uint16_t)(info >> 16);
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   for (i = 0; i < w * h; i ++) fb[i] = i;
   outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
-  uint32_t vga_info = inl(VGACTL_ADDR);
-  int w = (vga_info >> 16) & 0xffff;
-  int h = vga_info & 0xffff; 
+  uint32_t info = inl(VGACTL_ADDR);
+  uint16_t h = (uint16_t)(info & 0xFFFF);
+  uint16_t w = (uint16_t)(info >> 16);
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
     .width = w, .height = h,
