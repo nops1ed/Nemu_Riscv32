@@ -78,6 +78,7 @@ void init_audio() {
   s.channels = 2;
   s.samples = 4096;
   s.callback = (SDL_AudioCallback)callback_func;
+  printf("s initializes successfully\n");
   SDL_InitSubSystem(SDL_INIT_AUDIO);
   SDL_OpenAudio(&s, NULL);
   SDL_PauseAudio(0);
