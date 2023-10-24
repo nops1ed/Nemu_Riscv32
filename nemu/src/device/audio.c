@@ -69,6 +69,7 @@ void init_audio() {
   printf("I am ready to alloc space\n");
   AudioData audio;
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
+  printf("alloc success\n");
   audio.len = CONFIG_SB_SIZE;
   SDL_AudioSpec s = {};
   s.format = AUDIO_S16SYS;  // 假设系统中音频数据的格式总是使用16位有符号数来表示
