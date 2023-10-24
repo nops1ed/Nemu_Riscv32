@@ -11,17 +11,13 @@ enum {
   NUM_DEC = 10, NUM_OCT = 8,  NUM_HEX = 16,
 };
 
-/* Functions below implement writing integer or string 
-* to certain buffer or call putch()
-*/
-
 /* Write a single char to file stream or call putch() */
 static void _writeC(char *out, char c) {
   if(out) *out = c;
   else putch(c);
 }
 
-/* Write an interger into buffer according to type we wanna convert */
+/* Write an interger into the buffer according to type we wanna convert to. */
 
 /* Well, this is not a good practice 
  * But putch is a default function so we have to treat it differently instead of a file stream
