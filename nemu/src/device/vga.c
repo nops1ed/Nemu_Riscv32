@@ -15,6 +15,7 @@
 
 #include <common.h>
 #include <device/map.h>
+#include <device/mmio.h>
 
 #define SCREEN_W (MUXDEF(CONFIG_VGA_SIZE_800x600, 800, 400))
 #define SCREEN_H (MUXDEF(CONFIG_VGA_SIZE_800x600, 600, 300))
@@ -72,10 +73,17 @@ static inline void update_screen() {
 #endif
 
 void vga_update_screen() {
+  /*
   if(vgactl_port_base[1] & 0x1) {
     update_screen();
     vgactl_port_base[1] = 0;
   }
+  */
+#ifdef CONFIG_HAS_PORT_IO
+  uint32_t sync = mmio_read(CONFIG_VGA_CTL_MMIO + 4, 4);
+  if(sync != 0) update_screen();
+  else mmio_write(CONFIG_VGA_CTL_MMIO + 4, 4, 0);
+#endif
 }
 
 void init_vga() {
