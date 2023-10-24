@@ -8,6 +8,7 @@
 #define H 300
 
 void __am_gpu_init() {
+  /*
   uint32_t vga_info = inl(VGACTL_ADDR);
   int w = (vga_info >> 16) & 0xFFFF;
   int h = vga_info & 0xFFFF;
@@ -16,6 +17,7 @@ void __am_gpu_init() {
   for (i = 0; i < w * h; i ++) fb[i] = i;
   outl(SYNC_ADDR, 1);
   //vgactl_port_base[0] = (screen_width() << 16) | screen_height();
+  */
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
