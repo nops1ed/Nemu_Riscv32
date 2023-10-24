@@ -4,9 +4,6 @@
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
-#define W 400
-#define H 300
-
 static uint32_t _width, _height;
 
 void __am_gpu_init() {
@@ -26,7 +23,6 @@ void __am_gpu_init() {
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
-
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
     .width = _width, .height = _height,
