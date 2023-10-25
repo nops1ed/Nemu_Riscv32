@@ -39,7 +39,7 @@ void sdl_audio_callback(void *userdata, uint8_t *stream, int len){
   uint32_t cnt = audio_base[reg_count];
   if(len > cnt) len = cnt;
   
-  uint32_t sbuf_size = CONFIG_SB_SIZE;
+  uint32_t sbuf_size = audio_base[reg_sbuf_size];
   if(sbuf_pos + len > sbuf_size ){
     SDL_MixAudio(stream, sbuf + sbuf_pos, sbuf_size - sbuf_pos , SDL_MIX_MAXVOLUME);
     SDL_MixAudio(stream +  (sbuf_size - sbuf_pos), sbuf +  (sbuf_size - sbuf_pos), len - (sbuf_size - sbuf_pos) , SDL_MIX_MAXVOLUME);
@@ -79,5 +79,5 @@ void init_audio() {
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
-  //audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
+  audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
 }
