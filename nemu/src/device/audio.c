@@ -38,7 +38,7 @@ SDL_AudioSpec s = {};
 
 static bool is_init = false;
 void sdl_audio_callback(void *udata, uint8_t *stream, int len){
-  memset(stream, 0, len);
+  SDL_memset(stream, 0, len);
   uint32_t used_cnt = audio_base[reg_count];
   if(len > used_cnt) len = used_cnt;
   

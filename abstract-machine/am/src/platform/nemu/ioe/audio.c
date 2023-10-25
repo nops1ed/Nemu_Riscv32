@@ -15,7 +15,7 @@ typedef struct _AudioData {
 }_AudioData;
 
 //static _AudioData audio; 
-//static uint32_t buf_pos = 0;
+static uint32_t buf_pos = 0;
 
 void __am_audio_init() {
   /*
@@ -51,12 +51,13 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
+  /*
  //add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
   printf("Well, trying to init\n");
   
   uint32_t *start = ctl->buf.start;
   uint32_t *end = ctl->buf.end;
-  uint32_t size = (end - start) / sizeof(uint8_t);
+  uint32_t size = end - start;
   int count = inl(AUDIO_COUNT_ADDR);
   uint32_t offset = 0;
   printf("Well, trying to copy\n");
@@ -79,8 +80,8 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   outl(AUDIO_COUNT_ADDR, count - size);
 
   printf("Copy successfully, and copy %d bytes\n",offset);
+  */
 
-/*
   uint8_t *audio = (ctl->buf).start;
   uint32_t buf_size = inl(AUDIO_SBUF_SIZE_ADDR)/sizeof(uint8_t);
   uint32_t cnt = inl(AUDIO_COUNT_ADDR);
@@ -98,5 +99,4 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 
   outl(AUDIO_COUNT_ADDR, inl(AUDIO_COUNT_ADDR) + len);
   // printf("used cnt is %d\n",inl(AUDIO_COUNT_ADDR));
-  */
 }
