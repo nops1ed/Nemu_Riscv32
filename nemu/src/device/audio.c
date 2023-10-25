@@ -65,6 +65,8 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 }
 
 static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
+
+  SDL_PauseAudio(0);
 }
 
 
@@ -95,6 +97,6 @@ void init_audio() {
   printf("Trying to open audio\n");
   SDL_OpenAudio(&s, NULL);
   printf("Trying to play audio\n");
-  SDL_PauseAudio(0);
+  //SDL_PauseAudio(0);
   SDL_Delay(300);
 }
