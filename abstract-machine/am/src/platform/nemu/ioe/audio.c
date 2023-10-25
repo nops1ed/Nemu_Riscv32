@@ -51,52 +51,19 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
-  /*
  //add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
-  printf("Well, trying to init\n");
-  
-  uint32_t *start = ctl->buf.start;
-  uint32_t *end = ctl->buf.end;
-  uint32_t size = end - start;
-  int count = inl(AUDIO_COUNT_ADDR);
-  uint32_t offset = 0;
-  printf("Well, trying to copy\n");
-
-  count = inl(AUDIO_COUNT_ADDR);
-  while(size != 0) {
-    if(size / sizeof(uint32_t)) {
-      uint32_t data = *(start + offset);
-      outl(AUDIO_SBUF_ADDR + offset, data);
-      offset += 4;
-      size -= 4;
-    }
-    else {
-      uint8_t data = (uint8_t)*(start + offset);
-      outb(AUDIO_SBUF_ADDR + offset, data);
-      offset += 1;
-      size -= 1;
-    }
-  }
-  outl(AUDIO_COUNT_ADDR, count - size);
-
-  printf("Copy successfully, and copy %d bytes\n",offset);
-  */
-
   uint8_t *audio = ctl->buf.start;
   uint32_t buf_size = inl(AUDIO_SBUF_SIZE_ADDR);
   uint32_t cnt = inl(AUDIO_COUNT_ADDR);
-  uint32_t len = ( (ctl->buf).end - (ctl->buf).start )/sizeof(uint8_t);
+  uint32_t len = ctl->buf.end - ctl->buf.start;
   
-  // printf("area end %x and begin %x\n", (ctl->buf).end, (ctl->buf).start);
   while(len > buf_size - cnt){;}
 
-  uint8_t *ab = (uint8_t *)(uintptr_t)AUDIO_SBUF_ADDR;
+  uint8_t *AB = (uint8_t *)(uintptr_t)AUDIO_SBUF_ADDR;
   for(int i = 0; i < len; ++i) {
-    ab[buf_pos] = audio[i];
+    AB[buf_pos] = audio[i];
     buf_pos = (buf_pos + 1) % buf_size;  
-    // printf("cpu buf pos is %d\n",buf_pos);
   }
 
   outl(AUDIO_COUNT_ADDR, cnt + len);
-  // printf("used cnt is %d\n",inl(AUDIO_COUNT_ADDR));
 }
