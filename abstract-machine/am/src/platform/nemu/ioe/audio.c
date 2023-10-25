@@ -23,7 +23,7 @@ void __am_audio_init() {
 }
 
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
-  cfg->present = false;
+  cfg->present = true;
   /* Buf_size will not change. */
   cfg->bufsize = audio.sbuf_size;
 }
