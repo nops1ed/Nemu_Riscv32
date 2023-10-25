@@ -46,12 +46,10 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   uint32_t *start = ctl->buf.start;
   uint32_t *end = ctl->buf.end;
   uint32_t size = end - start;
-  //int count = inl(AUDIO_COUNT_ADDR);
-  //uint32_t offset = 0;
+  int count = inl(AUDIO_COUNT_ADDR);
+  uint32_t offset = 0;
   printf("Well, trying to copy\n");
 
-  memcpy((void *)AUDIO_SBUF_ADDR, start, size);
-  /*
   while(size != 0) {
     if(size / sizeof(uint32_t)) {
       uint32_t data = *(start + offset);
@@ -67,7 +65,6 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
     }
   }
   outl(AUDIO_COUNT_ADDR, count - size);
-  */
 
-  //printf("Copy successfully, and copy %d bytes\n",offset);
+  printf("Copy successfully, and copy %d bytes\n",offset);
 }
