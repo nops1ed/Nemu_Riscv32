@@ -47,7 +47,7 @@ void callback_func(void *data, Uint8 *buffer, int buffer_len)
     count++;
     printf("This func has been called %d times\n", count);
     /* Clear buffer */
-    SDL_memset(buffer, 0, buffer_len);
+    //SDL_memset(buffer, 0, buffer_len);
     if(audio.len <= 0)  return;
    
     uint32_t length = (uint32_t)buffer_len;
@@ -64,10 +64,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 
 }
 
-static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
-
-}
-
 
 void init_audio() {
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
@@ -79,7 +75,7 @@ void init_audio() {
 #endif
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
-  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_handler);
+  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
 
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
