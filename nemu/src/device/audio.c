@@ -32,6 +32,7 @@ typedef struct AudioData {
   uint32_t len;
 }AudioData;
 
+static int count = 0;
 static AudioData audio;
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
@@ -74,6 +75,8 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
   printf("Copying\n");
   memcpy(audio.idx, sbuf, CONFIG_SB_SIZE);
+  count++;
+  printf("This func has been called %d times\n", count);
 }
 
 
