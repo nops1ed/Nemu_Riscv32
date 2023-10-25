@@ -60,7 +60,7 @@ void callback_func(void) {
 }
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
-    SDL_AudioSpec s = {};
+  SDL_AudioSpec s = {};
   s.format = AUDIO_S16SYS;  
   s.userdata = &audio;        
   s.freq = 48000;
@@ -72,9 +72,12 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   SDL_OpenAudio(&s, NULL);
   printf("Trying to play audio\n");
   SDL_PauseAudio(0);
-
+  SDL_Delay(300);
 }
 
+static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
+
+}
 
 
 void init_audio() {
@@ -87,7 +90,7 @@ void init_audio() {
 #endif
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
-  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
+  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_handler);
 
 
 
