@@ -38,6 +38,7 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
+  /*
  //add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
   uint32_t *start = ctl->buf.start;
   uint32_t *end = ctl->buf.end;
@@ -60,4 +61,5 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
     }
   }
   outl(AUDIO_COUNT_ADDR, count - size);
+  */
 }

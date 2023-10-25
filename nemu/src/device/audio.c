@@ -65,6 +65,7 @@ void init_audio() {
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
+/*
 
   AudioData audio;
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
@@ -79,4 +80,5 @@ void init_audio() {
   SDL_InitSubSystem(SDL_INIT_AUDIO);
   SDL_OpenAudio(&s, NULL);
   SDL_PauseAudio(0);
+  */
 }
