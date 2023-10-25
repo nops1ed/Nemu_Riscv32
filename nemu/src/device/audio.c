@@ -43,23 +43,22 @@ void callback_func(void *data, Uint8 *buffer, int buffer_len)
 {
     /* Clear buffer */
     SDL_memset(buffer, 0, buffer_len);
-    AudioData *audio = (AudioData*)data;
-    if(audio->len <= 0)  return;
+    if(audio.len <= 0)  return;
    
     uint32_t length = (uint32_t)buffer_len;
-    length = (length > audio->len ? audio->len : length);
+    length = (length > audio.len ? audio.len : length);
 
-    SDL_memcpy(buffer, audio->idx, length);
+    SDL_memcpy(buffer, audio.idx, length);
 
-    audio->idx += length;
-    audio->len -= length;
+    audio.idx += length;
+    audio.len -= length;
 
 }
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   SDL_AudioSpec s = {};
   s.format = AUDIO_S16SYS;  
-  s.userdata = &audio;        
+  s.userdata = NULL;        
   s.freq = 44100;
   s.channels = 2;
   s.samples = 1024;
