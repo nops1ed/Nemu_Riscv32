@@ -57,10 +57,6 @@ void callback_func(void *data, Uint8 *buffer, int buffer_len)
 }
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
-
-}
-
-static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
   SDL_AudioSpec s = {};
   s.format = AUDIO_S16SYS;  
   s.userdata = &audio;        
@@ -73,6 +69,10 @@ static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
   SDL_OpenAudio(&s, NULL);
   printf("Trying to play audio\n");
   SDL_PauseAudio(0);
+}
+
+static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
+
 }
 
 
