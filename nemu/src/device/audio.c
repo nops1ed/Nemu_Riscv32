@@ -81,9 +81,9 @@ void init_audio() {
   SDL_AudioSpec s = {};
   s.format = AUDIO_S16SYS;  
   s.userdata = &audio;        
-  s.freq = 44100;
+  s.freq = 48000;
   s.channels = 2;
-  s.samples = 1024;
+  s.samples = 4096;
   s.callback = (SDL_AudioCallback)callback_func;
   SDL_InitSubSystem(SDL_INIT_AUDIO);
   printf("Trying to open audio\n");
