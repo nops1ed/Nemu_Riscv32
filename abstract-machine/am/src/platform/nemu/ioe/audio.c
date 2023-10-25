@@ -1,5 +1,6 @@
 #include <am.h>
 #include <nemu.h>
+#include <stdio.h>
 
 #define AUDIO_FREQ_ADDR      (AUDIO_ADDR + 0x00)
 #define AUDIO_CHANNELS_ADDR  (AUDIO_ADDR + 0x04)
@@ -45,6 +46,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   int count = inl(AUDIO_COUNT_ADDR);
   while(size > count) ;
   uint32_t offset = 0;
+  printf("Well, trying to copy\n");
   while(size != 0) {
     if(size / sizeof(uint32_t)) {
       uint32_t data = *(start + offset);
