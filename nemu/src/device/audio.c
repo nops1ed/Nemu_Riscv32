@@ -82,4 +82,5 @@ void init_audio() {
   printf("Trying to play audio\n");
   SDL_PauseAudio(0);
 
+  printf("Nothing goes wrong\n");
 }
