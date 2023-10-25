@@ -32,14 +32,23 @@ typedef struct AudioData {
   uint32_t len;
 }AudioData;
 
+static uint8_t buf[65535];
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 }
 
-void callback_func(void *data, void *buf, uint32_t buf_len) {
+void callback_func(void) {
   printf("calling callback\n");
+
+  //ssize
+  uint32_t length = audio_base[3];
+  memset(buf, 0 , 65535);
+  memcpy(buf, sbuf, length);
+  audio_base[5] = audio_base[3];
+
+  /*
   SDL_memset(buf, 0, buf_len);
   AudioData *audio = (AudioData *)data;
 
@@ -50,6 +59,8 @@ void callback_func(void *data, void *buf, uint32_t buf_len) {
 
   audio->idx += length;
   audio->len -= length;
+  */
+
 }
 
 
@@ -66,13 +77,15 @@ void init_audio() {
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
 
+  /*
   AudioData audio;
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
   audio.len = CONFIG_SB_SIZE;
+  */
   SDL_AudioSpec s = {};
-  s.format = AUDIO_S16SYS;  // 假设系统中音频数据的格式总是使用16位有符号数来表示
-  s.userdata = &audio;        
-  s.freq = 48000;
+  s.format = AUDIO_S16SYS;  
+  s.userdata = buf;        
+  s.freq = 44100;
   s.channels = 2;
   s.samples = 1024;
   s.callback = (SDL_AudioCallback)callback_func;
