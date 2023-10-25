@@ -36,10 +36,10 @@ static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
-  printf("Noting ot do\n");
 }
 
 void callback_func(void *data, void *buf, uint32_t buf_len) {
+  printf("calling callback\n");
   SDL_memset(buf, 0, buf_len);
   AudioData *audio = (AudioData *)data;
 
@@ -65,7 +65,6 @@ void init_audio() {
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
-/*
 
   AudioData audio;
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
@@ -75,10 +74,9 @@ void init_audio() {
   s.userdata = &audio;        
   s.freq = 48000;
   s.channels = 2;
-  s.samples = 4096;
+  s.samples = 1024;
   s.callback = (SDL_AudioCallback)callback_func;
   SDL_InitSubSystem(SDL_INIT_AUDIO);
   SDL_OpenAudio(&s, NULL);
   SDL_PauseAudio(0);
-  */
 }
