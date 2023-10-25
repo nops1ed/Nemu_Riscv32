@@ -45,7 +45,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   uint32_t *end = ctl->buf.end;
   uint32_t size = end - start;
   int count = inl(AUDIO_COUNT_ADDR);
-  while(size > count) ;
+  //while(size > count) ;
   uint32_t offset = 0;
   printf("Well, trying to copy\n");
   while(size != 0) {
