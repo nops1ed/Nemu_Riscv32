@@ -17,6 +17,9 @@
 #include <device/map.h>
 #include <SDL2/SDL.h>
 
+
+#define min(x,y) ( (x < y) ? x : y )
+
 enum {
   reg_freq,
   reg_channels,
@@ -27,47 +30,58 @@ enum {
   nr_reg
 };
 
-typedef struct AudioData {
-  uint8_t *idx;
-  uint32_t len;
-}AudioData;
-
-static int count = 0;
-static AudioData audio;
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
+static uint32_t sbuf_pos = 0;
 
-/*data could be an application-specific parameter saved in the SDL_AudioSpec structure's userdata field
-* buffer could be a pointer to the audio data buffer filled in by SDL_AudioCallback()
-*/
-void callback_func(void *data, Uint8 *buffer, int buffer_len)
-{  
-    printf("Copying\n");
-    memcpy(audio.idx, sbuf, CONFIG_SB_SIZE);
-    count++;
-    printf("This func has been called %d times\n", count);
-    /* Clear buffer */
-    //SDL_memset(buffer, 0, buffer_len);
-    if(audio.len <= 0)  return;
-   
-    uint32_t length = (uint32_t)buffer_len;
-    length = (length > audio.len ? audio.len : length);
+SDL_AudioSpec s = {};
 
-    SDL_memcpy(buffer, audio.idx, length);
-
-    audio.idx += length;
-    audio.len -= length;
-
+static bool is_init = false;
+void sdl_audio_callback(void *udata, uint8_t *stream, int len){
+  memset(stream, 0, len);
+  uint32_t used_cnt = audio_base[reg_count];
+  if(len > used_cnt) len = used_cnt;
+  
+  uint32_t sbuf_size = audio_base[reg_sbuf_size]/sizeof(uint8_t);
+  if( (sbuf_pos + len) > sbuf_size ){
+    SDL_MixAudio(stream, sbuf + sbuf_pos, sbuf_size - sbuf_pos , SDL_MIX_MAXVOLUME);
+    SDL_MixAudio(stream +  (sbuf_size - sbuf_pos), sbuf +  (sbuf_size - sbuf_pos), len - (sbuf_size - sbuf_pos) , SDL_MIX_MAXVOLUME);
+  }
+  else 
+    SDL_MixAudio(stream, sbuf + sbuf_pos, len , SDL_MIX_MAXVOLUME);
+  sbuf_pos = (sbuf_pos + len) % sbuf_size;
+  audio_base[reg_count] -= len;
+  
 }
 
-static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+void init_sound() {
+  s.format = AUDIO_S16SYS;  // 假设系统中音频数据的格式总是使用16位有符号数来表示
+  s.userdata = NULL;        // 不使用
+  s.freq = audio_base[reg_freq];
+  s.channels = audio_base[reg_channels];
+  s.samples = audio_base[reg_samples];
+  s.callback = sdl_audio_callback;
+  int ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
+  if(ret==0){
+    SDL_OpenAudio(&s, NULL);
+    SDL_PauseAudio(0);
+  }
+}
 
+
+static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+  if(audio_base[reg_init]==1){
+    init_sound();
+    is_init = true;
+    audio_base[reg_init] = 0;
+  }
 }
 
 
 void init_audio() {
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
   audio_base = (uint32_t *)new_space(space_size);
+  
 #ifdef CONFIG_HAS_PORT_IO
   add_pio_map ("audio", CONFIG_AUDIO_CTL_PORT, audio_base, space_size, audio_io_handler);
 #else
@@ -76,23 +90,5 @@ void init_audio() {
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
-
-
-  audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
-  audio.len = CONFIG_SB_SIZE;
-
-  SDL_AudioSpec s = {};
-  s.format = AUDIO_S16SYS;  
-  s.userdata = NULL;        
-  s.freq = 44100;
-  s.channels = 2;
-  s.samples = 1024;
-  s.callback = (SDL_AudioCallback)callback_func;
-  SDL_InitSubSystem(SDL_INIT_AUDIO);
-  printf("Trying to open audio\n");
-  SDL_OpenAudio(&s, NULL);
-  printf("Trying to play audio\n");
-  SDL_PauseAudio(0);
-  printf("call again\n");
-  SDL_Delay(300);
+  audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
 }
