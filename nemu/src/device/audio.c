@@ -36,26 +36,23 @@ static AudioData audio;
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
+/*data could be an application-specific parameter saved in the SDL_AudioSpec structure's userdata field
+* buffer could be a pointer to the audio data buffer filled in by SDL_AudioCallback()
+*/
+void callback_func(void *data, Uint8 *buffer, int buffer_len)
+{
+    /* Clear buffer */
+    SDL_memset(buffer, 0, buffer_len);
+    AudioData *audio = (AudioData*)data;
+    if(audio->len <= 0)  return;
+   
+    uint32_t length = (uint32_t)buffer_len;
+    length = (length > audio->len ? audio->len : length);
 
-void callback_func(void) {
-  printf("calling callback\n");
+    SDL_memcpy(buffer, audio->idx, length);
 
-  memset(audio.idx, 0 , CONFIG_SB_SIZE);
-  memcpy(audio.idx, sbuf, CONFIG_SB_SIZE);
-  audio_base[5] = audio_base[3];
-
-  /*
-  SDL_memset(buf, 0, buf_len);
-  AudioData *audio = (AudioData *)data;
-
-  uint32_t length = buf_len;
-  length = (length > audio->len ? audio->len : length);
-
-  SDL_memcpy(buf, audio->idx, length);
-
-  audio->idx += length;
-  audio->len -= length;
-  */
+    audio->idx += length;
+    audio->len -= length;
 
 }
 
