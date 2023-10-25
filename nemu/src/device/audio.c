@@ -40,7 +40,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 
 void callback_func(void *data, void *buf, uint32_t buf_len) {
   printf("calling callback\n");
-  SDL_memset(buf, 0, buf_len);
+  //SDL_memset(buf, 0, buf_len);
   AudioData *audio = (AudioData *)data;
 
   uint32_t length = buf_len;
