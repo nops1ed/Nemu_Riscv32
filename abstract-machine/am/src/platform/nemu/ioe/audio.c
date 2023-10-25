@@ -41,6 +41,7 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
  //add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
   printf("Well, trying to init\n");
+  
   uint32_t *start = ctl->buf.start;
   uint32_t *end = ctl->buf.end;
   uint32_t size = end - start;

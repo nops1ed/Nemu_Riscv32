@@ -72,6 +72,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 }
 
 static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
+  printf("Copying\n");
   memcpy(audio.idx, sbuf, CONFIG_SB_SIZE);
 }
 
