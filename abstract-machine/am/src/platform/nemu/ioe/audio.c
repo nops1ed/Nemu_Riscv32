@@ -82,8 +82,8 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   printf("Copy successfully, and copy %d bytes\n",offset);
   */
 
-  uint8_t *audio = (ctl->buf).start;
-  uint32_t buf_size = inl(AUDIO_SBUF_SIZE_ADDR)/sizeof(uint8_t);
+  uint8_t *audio = ctl->buf.start;
+  uint32_t buf_size = inl(AUDIO_SBUF_SIZE_ADDR);
   uint32_t cnt = inl(AUDIO_COUNT_ADDR);
   uint32_t len = ( (ctl->buf).end - (ctl->buf).start )/sizeof(uint8_t);
   
@@ -97,6 +97,6 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
     // printf("cpu buf pos is %d\n",buf_pos);
   }
 
-  outl(AUDIO_COUNT_ADDR, inl(AUDIO_COUNT_ADDR) + len);
+  outl(AUDIO_COUNT_ADDR, cnt + len);
   // printf("used cnt is %d\n",inl(AUDIO_COUNT_ADDR));
 }
