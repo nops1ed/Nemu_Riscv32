@@ -37,6 +37,9 @@ static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+    memset(audio.idx, 0 , CONFIG_SB_SIZE);
+  memcpy(audio.idx, sbuf, CONFIG_SB_SIZE);
+  audio_base[5] = audio_base[3];
 }
 
 void callback_func(void) {
