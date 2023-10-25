@@ -32,7 +32,7 @@ typedef struct AudioData {
   uint32_t len;
 }AudioData;
 
-static uint8_t buf[65535];
+static AudioData audio;
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
@@ -42,10 +42,8 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 void callback_func(void) {
   printf("calling callback\n");
 
-  //ssize
-  uint32_t length = audio_base[3];
-  memset(buf, 0 , 65535);
-  memcpy(buf, sbuf, length);
+  memset(audio.idx, 0 , CONFIG_SB_SIZE);
+  memcpy(audio.idx, sbuf, CONFIG_SB_SIZE);
   audio_base[5] = audio_base[3];
 
   /*
@@ -77,14 +75,12 @@ void init_audio() {
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
 
 
-  /*
-  AudioData audio;
+
   audio.idx = (uint8_t *)new_space(CONFIG_SB_SIZE);
   audio.len = CONFIG_SB_SIZE;
-  */
   SDL_AudioSpec s = {};
   s.format = AUDIO_S16SYS;  
-  s.userdata = buf;        
+  s.userdata = &audio;        
   s.freq = 44100;
   s.channels = 2;
   s.samples = 1024;
