@@ -24,6 +24,8 @@ static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_
 static void ftrace(Decode *s, word_t snpc, word_t dnpc);
 
 #define R(i) gpr(i)
+#define CR(i) csr(i)
+
 #define Mr vaddr_read
 #define Mw vaddr_write
 #define Bc Branch_Cond
@@ -154,28 +156,17 @@ static void ftrace(Decode *s, word_t snpc, word_t dnpc) {
 
 static void Branch_Cond(Decode *s, word_t src1, word_t src2, word_t imm, uint32_t Cond) {
   switch(Cond) {
-    case COND_BEQ:
-      if (!(src1 == src2)) return;
-      break; 
-    case COND_BNE:
-      if (!(src1 != src2)) return;
-      break;
-    case COND_BLT:
-      if (!((int32_t)src1 < (int32_t)src2)) return;
-      break;
-    case COND_BGE:
-      if (!((int32_t)src1 >= (int32_t)src2)) return;
-      break;
-    case COND_BGEU:
-      if (!(src1 >= src2)) return;
-      break;
-    case COND_BLTU:
-      if (!(src1 < src2)) return;
-      break;
+    case COND_BEQ:  if (!(src1 == src2)) return;  break; 
+    case COND_BNE:  if (!(src1 != src2)) return;  break;
+    case COND_BLT:  if (!((int32_t)src1 < (int32_t)src2)) return; break;
+    case COND_BGE:  if (!((int32_t)src1 >= (int32_t)src2)) return; break;
+    case COND_BGEU: if (!(src1 >= src2)) return; break;
+    case COND_BLTU: if (!(src1 < src2)) return; break;
     default:
-      printf("Undefined Behavior.\n");
+      printf("Undefined COND_JMP.\n");
       assert(0);
   }
+  /* All COND_JMP will execute this statement. */
   s->dnpc = s->pc + imm;
 }
 
